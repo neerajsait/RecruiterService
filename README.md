@@ -1,3 +1,38 @@
+# RecruiterService
+
+> Recruiter service backend application built with Java and Spring Boot
+
+Built with Java and focused on backend, java, recruitment, rest-api.
+
+## About this project
+
+This repository is part of **Neeraj Sai's** growing collection of software projects, experiments, and learning builds. It reflects a practical, curious approach to creating useful products and understanding how they work under the hood.
+
+## Getting started
+
+Clone the repository and follow the setup instructions for the project's framework or language:
+
+```bash
+git clone https://github.com/neerajsait/RecruiterService.git
+cd RecruiterService
+```
+
+Check the project files for the available run commands and configuration requirements.
+
+## Links
+
+[Repository](https://github.com/neerajsait/RecruiterService)
+
+## Author
+
+**Tiruveedhi Neeraj Venkata Sai**
+
+- GitHub: [@neerajsait](https://github.com/neerajsait)
+- Portfolio: [neeraj's portfolio](https://github.com/neerajsait/portfoliomain)
+
+
+## Existing project documentation
+
 # 🌟 Campus Recruitment Portal (Recruiter Model)
 
 Welcome to the official repository of the **Campus Recruitment Portal – Recruiter Model**.  
