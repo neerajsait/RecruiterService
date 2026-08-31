@@ -5,7 +5,7 @@
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recruiter Registration</title>
-    <style>
+    <style nonce="<%= request.getAttribute("cspNonce") %>">
         * {
             margin: 0;
             padding: 0;
@@ -124,6 +124,7 @@
         <div class="registration-box">
             <h2>Recruiter Registration</h2>
             <form method="post" action="insertrec">
+                <input type="hidden" name="_csrf" value="<%= request.getAttribute("csrfToken") %>" />
                 <div class="input-group">
                     <label for="rname">Enter Name</label>
                     <input type="text" id="rname" name="rname" required/>

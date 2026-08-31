@@ -1,41 +1,9 @@
 <%@page import="com.klef.jfsd.springboot.model.Recruiter"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
-
-<%
-Recruiter r = (Recruiter)session.getAttribute("recruiter");
-if (r == null) {
-    response.sendRedirect("rsessionexpiry");
-    return;
-}
-else if(r.getStatus().equals("Blocked"))
-{
-	response.sendRedirect("rblocked");
-}
-else if(r.getStatus().equals("PENDING"))
-{
-	response.sendRedirect("rpending");
-}
-
-%>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Job Posting</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        /* Keep original sidebar styles */
+<%@ include file="recruiter_header.jsp" %>
+<style nonce="<%= request.getAttribute("cspNonce") %>">
         
-        /* New Professional Form Styles */
-        .main-content {
-            margin-left: 250px;
-            padding: 2rem;
-            background-color: #f5f7fa;
-        }
 
         .add-job-posting {
             background: white;
@@ -131,88 +99,12 @@ else if(r.getStatus().equals("PENDING"))
             grid-column: 1 / -1;
         }
 
-        /* Header styles */
-        header {
-            background: white;
-            padding: 20px 32px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            margin-bottom: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .user-info span {
-            font-weight: 500;
-            color: #374151;
-        }
-
-        .logout-btn {
-            background-color: #ef4444;
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .logout-btn:hover {
-            background-color: #1d4ed8;
-        }
-
-        /* Keep original sidebar styles unchanged */
-    </style>
-</head>
-<body>
-     <div class="sidebar-container">
-    <!-- Menu Icon (Hamburger) -->
-    <div class="menu-icon">
-        <i class="fas fa-bars" onclick="toggleSidebar()"></i>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header"><br><br>
-            <h2>Welcome Recruiter</h2>
-        </div>
-        <ul>
-            <li><a href="rhome"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-btn" onclick="toggleDropdown('jobPostings')">
-                    <i class="fas fa-briefcase"></i> Manage Job Postings
-                    <span class="arrow">&#9662;</span>
-                </a>
-                <ul class="dropdown-content" id="jobPostings-dropdown">
-                    <li><a href="rview_job_postings"><i class="fas fa-eye"></i> View Job Postings</a></li>
-                    
-                    <li><a href="radd_job_posting"><i class="fas fa-plus"></i> Add New Posting</a></li>
-                </ul>
-            </li>
-            <li><a href="jobapplications"><i class="fas fa-file-alt"></i> View Applications</a></li>
-            <li><a href="rsettings"><i class="fas fa-cogs"></i> Profile</a></li>
-        </ul>
-    </div>
-</div>
-
-    <div class="main-content" id="mainContent">
-        <header>
-            <h1>CareerStream</h1>
-            <div class="user-info">
-                <span><%=r.getName() %></span>
-                <a href="rlogout"><button class="logout-btn">Logout</button></a>
-            </div>
-        </header>
+        
+</style>
 
         <section class="add-job-posting">
             <form action="editjobposting?id=${job.id}" method="POST">
+                <input type="hidden" name="_csrf" value="<%= request.getAttribute("csrfToken") %>" />
             
             <input type="hidden" name="jobid" value="${job.id}">
     <input type="hidden" name="recruiterid" value="${job.recruiterid}">
@@ -313,7 +205,4 @@ else if(r.getStatus().equals("PENDING"))
                 </button>
             </form>
         </section>
-    </div>
-    <script src="${pageContext.request.contextPath}/dashboard.js"></script>
-</body>
-</html>
+<%@ include file="recruiter_footer.jsp" %>

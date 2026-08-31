@@ -13,6 +13,9 @@ public interface RecruiterRepository extends JpaRepository<Recruiter,Integer>
 	@Query("select r from Recruiter r where r.email=?1 and r.password=?2")
 	public Recruiter checkreclogin(String email, String pwd);
 
+	@Query("select r from Recruiter r where r.email=?1")
+	public Recruiter findByEmail(String email);
+
 	
 
 }

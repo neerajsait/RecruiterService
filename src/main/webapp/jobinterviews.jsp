@@ -2,49 +2,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
-
-<%
-Recruiter r = (Recruiter)session.getAttribute("recruiter");
-if (r == null) {
-    response.sendRedirect("rsessionexpiry");
-    return;
-}
-else if(r.getStatus().equals("Blocked"))
-{
-	response.sendRedirect("rblocked");
-}
-else if(r.getStatus().equals("PENDING"))
-{
-	response.sendRedirect("rpending");
-}
-
-%>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        /* Additional custom styles */
+<%@ include file="recruiter_header.jsp" %>
+<style nonce="<%= request.getAttribute("cspNonce") %>">
+        
         .table-hover tbody tr:hover {
             background-color: rgba(0, 123, 255, 0.1);
-        }
-        .table-custom thead {
-            background-color: #022356; /* Dark blue header */
-            color: #f4f7f6;
-        }
-        .card-header {
-            background-color: #022356 !important; /* Dark blue header for card */
-            
         }
    
         .main-content {
@@ -94,7 +56,7 @@ else if(r.getStatus().equals("PENDING"))
             background-color: #c0392b;
         }
 
-       esponsive adjustments */
+        
         @media (max-width: 768px) {
             .main-content {
                 padding: 1rem;
@@ -191,27 +153,22 @@ else if(r.getStatus().equals("PENDING"))
             line-height: 1.6;
         }
 
-        .card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin: 20px;
+        .job-interviews-section {
+            margin: 20px 0;
         }
 
-        .card-header {
-            background-color: #022356;
-            color: white;
-            padding: 15px 20px;
+        .section-header {
+            color: #333;
+            padding: 15px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
+            margin-bottom: 10px;
         }
 
-        .card-header h4 {
+        .section-header h4 {
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
         }
 
         .header-controls {
@@ -223,44 +180,45 @@ else if(r.getStatus().equals("PENDING"))
         .search-container {
             display: flex;
             align-items: center;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             overflow: hidden;
         }
 
         .search-icon {
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
+            padding: 8px 10px;
+            color: #666;
         }
 
         .search-input {
             border: none;
-            background: transparent;
-            color: white;
-            padding: 10px;
+            padding: 8px;
             width: 250px;
+            font-size: 0.9rem;
+            outline: none;
         }
 
         .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+            color: #999;
         }
 
         .filter-button {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: #0056b3;
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 6px;
+            padding: 8px 12px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
+            font-size: 0.9rem;
             transition: background-color 0.3s;
         }
 
         .filter-button:hover {
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: #004494;
         }
 
         .filter-dropdown {
@@ -301,20 +259,20 @@ else if(r.getStatus().equals("PENDING"))
         .apply-filter-btn {
             width: 100%;
             padding: 10px;
-            background-color: #022356;
+            background-color: #0056b3;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
 
         .apply-filter-btn:hover {
-            background-color: #0b3368;
+            background-color: #004494;
         }
 
-        .card-body {
-            padding: 20px;
+        .section-body {
+            padding: 20px 0;
         }
 
         .table {
@@ -323,8 +281,8 @@ else if(r.getStatus().equals("PENDING"))
         }
 
         .table thead {
-            background-color: #022356;
-            color: white;
+            background-color: #f4f4f4;
+            color: #333;
         }
 
         .table th,
@@ -506,57 +464,14 @@ else if(r.getStatus().equals("PENDING"))
         		
         
     </style>
-    <script src="JavaScript/dashboard.js" defer></script>
-</head>
-<body>
-<script src="${pageContext.request.contextPath}/dashboard.js"></script>
-    <div class="sidebar-container">
-        <!-- Menu Icon (Hamburger) -->
-        <div class="menu-icon">
-            <i class="fas fa-bars" onclick="toggleSidebar()"></i>
-        </div>
-
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-            <br><br>
-                <h2>Welcome <%= r.getName() %></h2>
-            </div>
-            <ul>
-                <li><a href="rhome"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-btn" onclick="toggleDropdown('jobPostings')">
-                        <i class="fas fa-briefcase"></i> Manage Job Postings
-                        <span class="arrow">&#9662;</span>
-                    </a>
-                    <ul class="dropdown-content" id="jobPostings-dropdown">
-                        <li><a href="rview_job_postings"><i class="fas fa-eye"></i> View Job Postings</a></li>
-                        
-                        <li><a href="radd_job_posting"><i class="fas fa-plus"></i> Add New Posting</a></li>
-                    </ul>
-                </li>
-                <li><a href="jobapplications"><i class="fas fa-file-alt"></i> View Applications</a></li>
-                <li><a href="rsettings"><i class="fas fa-cogs"></i> Profile</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="main-content">
-        <header>
-            <h1>CareerStream</h1>
-            <div class="user-info">
-                <span><%=r.getName()%></span>
-                <a href="rlogout"><button class="logout-btn">Logout</button></a>
-            </div>
-        </header>
         <div class="back-button-container">
     <a href="/recruiter/getapplicants?id=${jobid}&name=${jobname}" class="circular-back-link">
         <i class="fas fa-arrow-left"></i>
         Back to Job Applicants
     </a>
 	</div>
-            <div class="card">
-        <div class="card-header">
+            <section class="job-interviews-section">
+        <div class="section-header">
             <h4>${jobname} - Interviews List</h4>
             <div class="header-controls">
                 <div class="search-container">
@@ -583,7 +498,7 @@ else if(r.getStatus().equals("PENDING"))
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="section-body">
             <table class="table">
                 <thead>
                     <tr>
@@ -644,7 +559,7 @@ else if(r.getStatus().equals("PENDING"))
                         </td>
                         
                     </tr>
-                    <!-- Additional rows can be added here -->
+                    
                     </c:if>
                     </c:forEach>
                 </tbody>
@@ -654,8 +569,7 @@ else if(r.getStatus().equals("PENDING"))
     </div>
     
     </div>
-	<script src="${pageContext.request.contextPath}/dashboard.js"></script>
-    <script>
+    <script nonce="<%= request.getAttribute("cspNonce") %>">
  // Dropdown functionality
     const filterButton = document.querySelector('.filter-button');
     const filterDropdown = document.querySelector('.filter-dropdown');
@@ -706,6 +620,6 @@ else if(r.getStatus().equals("PENDING"))
 
     // Add event listeners
     searchInput.addEventListener('keyup', applySearchAndFilter);
-    applyFiltersBtn.addEventListener('click', applySearchAndFilter);    </script>
-</body>
-</html>
+    applyFiltersBtn.addEventListener('click', applySearchAndFilter);    
+    </script>
+<%@ include file="recruiter_footer.jsp" %>

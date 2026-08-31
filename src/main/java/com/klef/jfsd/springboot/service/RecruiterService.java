@@ -33,6 +33,7 @@ public interface RecruiterService
 	
 	//Tasks 
 	 Task addTask(Task task);
+	 List<Task> viewAllTasks();
 	 //List<Task> getTasksByRecruiterId(int recruiterId);
 	 Task updateTask(Task task);
 	 void deleteTask(int taskId);

@@ -6,6 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,39 +29,61 @@ public class Jobs {
     private int recruiterid;
 
     @Column(name = "jname", nullable = false, length = 50)
+    @NotBlank(message = "Job Title cannot be blank")
+    @Size(max = 50, message = "Job Title must not exceed 50 characters")
     private String name;
 
     @Column(name = "jcompany", nullable = false, length = 50)
+    @NotBlank(message = "Company cannot be blank")
+    @Size(max = 50, message = "Company name must not exceed 50 characters")
     private String company;
 
     @Column(name = "location", nullable = false, length = 50)
+    @NotBlank(message = "Location cannot be blank")
+    @Size(max = 50, message = "Location must not exceed 50 characters")
     private String location;
 
     @Column(name = "jetype", nullable = false, length = 50)
+    @NotBlank(message = "Employment Type cannot be blank")
+    @Size(max = 50, message = "Employment Type must not exceed 50 characters")
     private String etype;
 
     @Column(name = "jtype", nullable = false, length = 50)
+    @NotBlank(message = "Work Model cannot be blank")
+    @Size(max = 50, message = "Work Model must not exceed 50 characters")
     private String type;
 
     @Column(name = "jexperience", nullable = false)
+    @NotBlank(message = "Required Experience cannot be blank")
     private String experience;
 
     @Column(name = "jsalary", nullable = false, length = 50)
+    @NotBlank(message = "Salary Range cannot be blank")
+    @Size(max = 50, message = "Salary Range must not exceed 50 characters")
     private String salary;
 
-    @Column(name = "jqualifications", nullable = false, length = 150)
+    @Column(name = "jqualifications", nullable = false, length = 1000)
+    @NotBlank(message = "Qualifications cannot be blank")
+    @Size(max = 1000, message = "Qualifications must not exceed 1000 characters")
     private String qualifications;
 
-    @Column(name = "jdescription", nullable = false, length = 150)
+    @Column(name = "jdescription", nullable = false, length = 1000)
+    @NotBlank(message = "Job Description cannot be blank")
+    @Size(max = 1000, message = "Job Description must not exceed 1000 characters")
     private String description;
 
     @Column(name = "jdeadline", nullable = false, length = 20)
+    @Size(max = 20, message = "Deadline string must not exceed 20 characters")
     private String deadline;
 
     @Column(name = "jemail", nullable = false, length = 50)
+    @NotBlank(message = "Contact Email cannot be blank")
+    @Email(message = "Please enter a valid email address")
+    @Size(max = 50, message = "Contact Email must not exceed 50 characters")
     private String email;
     
     @Column(name = "max_applications", nullable = false)
+    @Min(value = 1, message = "Maximum applications must be at least 1")
     private int maxapplications;
     
     @Column(name = "recieved_applications", nullable = false)

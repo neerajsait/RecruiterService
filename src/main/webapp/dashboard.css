@@ -1,40 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="en">
-
-<%
-	//Student s = (Student) session.getAttribute("student");
-
-	//if(s==null)
-	//{
-		//response.sendRedirect("sessionexpiry");
-		//return;
-	//}
-
-%>
-
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student</title>
-    <link rel="stylesheet" href="./css/studentsidebar.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" />
-    
-    <style nonce="<%= request.getAttribute("cspNonce") %>">
-    @charset "UTF-8";
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+@charset "UTF-8";
 /* General Reset */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'poppins', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
+body 
+{
     display: flex;
     height: 100vh;
     background-color: #f5f5f5;
@@ -55,15 +30,15 @@ body {
 
 /* Sidebar Styles */
 .sidebar {
-    width: 260px;
+    width: 290px;
     background-color: #2f335a;
     padding: 20px;
     color: white;
     position: fixed;
-    left: -260px; /* Initially hidden */
+    left: -290px; /* Initially hidden */
     top: 0;
     height: 100%;
-    transition: left 0.3s ease;
+    transition: left 0.5s ease; /* Increased transition duration */
     z-index: 900; /* Above content */
     overflow-y: auto; /* Scroll if content exceeds */
 }
@@ -74,13 +49,11 @@ body {
 
 .sidebar-header {
     margin-bottom: 20px;
-    font-family: 'Poppins', sans-serif;
 }
 
 .sidebar h2 {
     font-size: 22px;
     color: #ffffff;
-    font-family: 'Poppins', sans-serif;
 }
 
 .sidebar ul {
@@ -100,7 +73,6 @@ body {
     padding: 10px;
     border-radius: 5px;
     transition: background 0.3s, color 0.3s;
-    font-family: 'Poppins', sans-serif;
 }
 
 .sidebar ul li a:hover {
@@ -128,13 +100,11 @@ body {
     border-radius: 5px;
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.3s ease-in-out;
-    font-family: 'Poppins', sans-serif;
+    transition: max-height 0.5s ease-in-out; /* Smoother dropdown transition */
 }
 
 .dropdown-content li {
     margin: 5px 0;
-    font-family: 'Poppins', sans-serif;
 }
 
 .dropdown-content li a {
@@ -146,7 +116,6 @@ body {
     padding: 8px 15px;
     border-radius: 5px;
     transition: background 0.3s;
-    font-family: 'Poppins', sans-serif;
 }
 
 .dropdown-content li a:hover {
@@ -173,7 +142,7 @@ body {
 
 .main-content {
     padding: 20px;
-    margin-left: 260px; /* Reserve space for sidebar */
+    margin-left: 270px; /* Reserve space for sidebar */
     margin-top: 50px; /* Space for header */
     transition: margin-left 0.3s ease;
     flex-grow: 1;
@@ -200,20 +169,19 @@ header {
 
 header h1 {
     font-size: 24px;
+    font-weight:bolder;
     color: #2c3e50;
     font-family: 'Poppins', sans-serif;
+    
 }
-
 .user-info {
     display: flex;
     align-items: center;
-    font-family: 'Poppins', sans-serif;
 }
 
 .user-info span {
     margin-right: 20px;
     font-size: 18px;
-    font-family: 'Poppins', sans-serif;
 }
 
 .logout-btn {
@@ -224,7 +192,6 @@ header h1 {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    font-family: 'Poppins', sans-serif;
 }
 
 .logout-btn:hover {
@@ -238,7 +205,6 @@ header h1 {
     justify-content: center;
     gap: 15px; /* Reduced gap between cards */
     margin-top: 20px;
-    font-family: 'Poppins', sans-serif;
 }
 
 .card {
@@ -254,7 +220,7 @@ header h1 {
 
 .card:hover {
     transform: translateY(-4px); /* Slight lift effect on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly enhanced shadow on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
 }
 
 .card h3 {
@@ -330,7 +296,6 @@ body, html {
     height: 100%;
     font-family: 'Poppins', sans-serif;
     background-color: #f4f6f9;
-    font-family: 'Poppins', sans-serif;
 }
 
 .login-page {
@@ -383,6 +348,10 @@ body, html {
     background-color: #fff;
 }
 
+.input-group input:hover {
+    border-color: #0b5ed7; /* Added hover effect */
+}
+
 .login-btn {
     width: 100%;
     padding: 15px;
@@ -392,146 +361,17 @@ body, html {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: 600;
+    transition: background-color 0.3s;
 }
 
 .login-btn:hover {
     background-color: #0b5ed7;
 }
 
-.login-box form {
-    width: 100%;
+.forgot-password {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #0112AC;
+    cursor: pointer;
 }
 
-/* Admin Login  */
-
-
-    
-        .dashboard-cards {
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        .card-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
-    gap: 20px;  /* Add space between cards */
-}
-
-
-        .card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    padding: 20px;
-    width: calc(48% - 20px);  /* Adjusted width */
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-right: 20px; /* Added margin */
-}
-
-.card:last-child {
-    margin-right: 0; /* No margin on the last card of the row */
-}
-
-
-        .card:hover {
-            transform: scale(1.05);  /* Increased zoom effect */
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);  /* Enhanced shadow on hover */
-        }
-
-        .card i {
-            font-size: 48px;
-            margin-bottom: 15px;  /* Slightly increased space below icon */
-            color: #007bff;
-        }
-
-        .card h3 {
-            margin-bottom: 15px;  /* Slightly increased space below title */
-            color: #333;
-        }
-
-        .card p {
-            font-size: 24px;
-            font-weight: bold;
-            color: #007bff;
-        }
-
-        @media (max-width: 768px) {
-            .card-row {
-                flex-direction: column;
-            }
-            .card {
-                width: 60%;
-                margin-bottom: 90px;  /* Increased space between cards on mobile */
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Sidebar Container and other elements remain unchanged -->
-<script src="${pageContext.request.contextPath}/javascript/studentdashboard.js"></script>
-
-
-    <!-- Sidebar Container -->
-    <div class="sidebar-container">
-        <!-- Menu Icon (Hamburger) -->
-        <div class="menu-icon">
-            <i class="fas fa-bars" onclick="toggleSidebar()"></i>
-        </div>
-
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header"><br><br>
-                <h2>Hello </h2> <!-- Updated Heading -->
-            </div>
-            <ul>
-                <li><a href="studentdashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-    			  <li><a href="#"><i class="fas fa-briefcase"></i> Apply for jobs</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-btn" onclick="toggleDropdown('students')">
-                        <i class="fas fa-eye"></i> View
-                        <span class="arrow">&#9662;</span>
-                    </a>
-                    <ul class="dropdown-content" id="students-dropdown">
-                        <li><a href="#"><i class="fas fa-tachometer-alt"></i> Applied Jobs</a></li>
-                        <li><a href="#"><i class="fas fa-bars"></i> Watchlist</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-btn" onclick="toggleDropdown('employers')">
-                        <i class="fas fa-user-edit"></i> Profile
-                        <span class="arrow">&#9662;</span>
-                    </a>
-                    <ul class="dropdown-content" id="employers-dropdown">
-                        <li><a href="studentprofile"><i class="fas fa-user-circle"></i> Personal Details</a></li>
-                        <li><a href="educationdetails"><i class="fas fa-id-card" > </i> Academic Details</a></li>
-                        <li><a href="#"><i class="fas fa-file-pdf"></i> Documents Uploaded</a></li>
-
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="main-content">
-        <header>
-            <h1>CareerStream</h1>
-            <div class="user-info">
-                <span>jk</span>
-                <button class="logout-btn" onclick="window.location.href='studentlogout'">Logout</button>
-            </div>
-        </header>
-        
-        
-    </div>
-    
-    <!-- JavaScript remains unchanged -->
-</body>
-
-
-    
-
-</html>

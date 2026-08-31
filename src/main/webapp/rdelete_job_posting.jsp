@@ -1,10 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Delete Job Post</title>
-    <style>
+    <style nonce="<%= request.getAttribute("cspNonce") %>">
         table {
             width: 100%;
             max-width: 1200px;

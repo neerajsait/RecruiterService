@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.klef.jfsd.springboot.model.AppliedJobs;
@@ -28,6 +29,9 @@ public class RecruiterServiceImpl implements RecruiterService
 	private RecruiterRepository recruiterRepository;
 	
 	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
 	private JobsRepository jobsRepository;
 	
 	@Autowired
@@ -47,24 +51,20 @@ public class RecruiterServiceImpl implements RecruiterService
 
 	@Override
 	public String RecruiterRegistration(Recruiter re) {
-		 
-	            recruiterRepository.save(re);
-	            return "Congratulations! Your Account Has Been Created 😀";
-	        
-		
+		re.setPassword(passwordEncoder.encode(re.getPassword()));
+		recruiterRepository.save(re);
+		return "Congratulations! Your Account Has Been Created 😀";
 	}
 
 	@Override
 	public Recruiter checkreclogin(String email, String pwd) {
 		return recruiterRepository.checkreclogin(email, pwd);
-
 	}
 
 	@Override
 	public String updaterProfile(Recruiter recruiter) {
 	    Recruiter r = recruiterRepository.findById(recruiter.getId()).orElseThrow(() -> 
 	        new RuntimeException("Recruiter not found with ID: " + recruiter.getId()));
-	    
 	    
 	    r.setName(recruiter.getName());
 	    r.setContact(recruiter.getContact());
@@ -73,9 +73,8 @@ public class RecruiterServiceImpl implements RecruiterService
 	    r.setLocation(recruiter.getLocation());
 	    r.setCompany(recruiter.getCompany());
 	    
-	   
 	    if (recruiter.getPassword() != null && !recruiter.getPassword().trim().isEmpty()) {
-	        r.setPassword(recruiter.getPassword());
+	        r.setPassword(passwordEncoder.encode(recruiter.getPassword()));
 	    }
 	    
 	    recruiterRepository.save(r);
@@ -132,10 +131,10 @@ public class RecruiterServiceImpl implements RecruiterService
 		 return taskRepository.save(task);
 	}
 
-	
-//	public List<Task> getTasksByRecruiterId(int recruiterId) {
-//		 //return taskRepository.findByRecruiterId(recruiterId);
-//	}
+	@Override
+	public List<Task> viewAllTasks() {
+		 return taskRepository.findAll();
+	}
 
 	@Override
 	public Task updateTask(Task task) {

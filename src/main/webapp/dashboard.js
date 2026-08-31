@@ -25,16 +25,20 @@ function logout() {
 }
 
 
-/*// JavaScript for Password Matching Validation
+// JavaScript for Password Matching Validation
         const form = document.querySelector('form');
-        form.addEventListener('submit', function(event) {
-            const password = document.getElementById('rpwd').value;
-            const confirmPassword = document.getElementById('rpwd_confirm').value;
-            if (password !== confirmPassword) {
-                event.preventDefault();
-                alert("Passwords do not match. Please try again.");
-            }
-        });*/
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                const password = document.getElementById('rpwd');
+                const confirmPassword = document.getElementById('rpwd_confirm');
+                if (password && confirmPassword) {
+                    if (password.value !== confirmPassword.value) {
+                        event.preventDefault();
+                        alert("Passwords do not match. Please try again.");
+                    }
+                }
+            });
+        }
 		
 		
 		

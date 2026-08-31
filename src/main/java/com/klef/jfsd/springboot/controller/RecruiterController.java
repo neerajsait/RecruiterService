@@ -3,6 +3,7 @@ package com.klef.jfsd.springboot.controller;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,15 +39,25 @@ import jakarta.security.auth.message.callback.PrivateKeyCallback.Request;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @RequestMapping("recruiter")
 public class RecruiterController {
+	private static final Logger logger = LoggerFactory.getLogger(RecruiterController.class);
+
 	@Autowired
 	private RecruiterService recruiterService;
 	
-	 @Autowired 
-	  private JavaMailSender mailSender;
+	@Autowired 
+	private JavaMailSender mailSender;
+	
+	@Autowired
+	private Validator validator;
 	
 
 	@GetMapping("/")
@@ -87,6 +99,7 @@ public class RecruiterController {
 		mv.addObject("acnt", acnt);
 		mv.addObject("pcnt", pcnt);
 		mv.addObject("bcnt", bcnt);
+		mv.addObject("tasks", recruiterService.viewAllTasks());
 		return mv;
 	}
 
@@ -119,14 +132,39 @@ public class RecruiterController {
 		rec.setContact(contact);
 		rec.setStatus("PENDING");
 
-		String msg = recruiterService.RecruiterRegistration(rec);
+		// Manual check for password presence during registration
+		if (password == null || password.trim().isEmpty()) {
+			ModelAndView mv = new ModelAndView("rreg");
+			mv.addObject("errorMessage", "Password cannot be blank");
+			return mv;
+		} else if (password.length() < 8 || password.length() > 50) {
+			ModelAndView mv = new ModelAndView("rreg");
+			mv.addObject("errorMessage", "Password must be between 8 and 50 characters");
+			return mv;
+		}
 
-		ModelAndView mv = new ModelAndView("regsuccess");
-		mv.addObject("message", msg);
+		// Run JSR-380 validation
+		Set<ConstraintViolation<Recruiter>> violations = validator.validate(rec);
+		if (!violations.isEmpty()) {
+			ModelAndView mv = new ModelAndView("rreg");
+			mv.addObject("errorMessage", violations.iterator().next().getMessage());
+			return mv;
+		}
 
-		return mv;
-		
-
+		try {
+			String msg = recruiterService.RecruiterRegistration(rec);
+			ModelAndView mv = new ModelAndView("regsuccess");
+			mv.addObject("message", msg);
+			return mv;
+		} catch (Exception e) {
+			ModelAndView mv = new ModelAndView("rreg");
+			if (e.getMessage() != null && e.getMessage().contains("Duplicate entry")) {
+				mv.addObject("errorMessage", "Email or Contact Number already registered!");
+			} else {
+				mv.addObject("errorMessage", "Registration failed: " + e.getMessage());
+			}
+			return mv;
+		}
 	}
 	
 	@GetMapping("rupdateprofile")
@@ -165,16 +203,47 @@ public class RecruiterController {
 	    r.setEmail(email);
 	    r.setPassword(password); // Pass password as is (can be null/blank)
 	    r.setContact(contact);
+	    r.setStatus(rec.getStatus());
 
-	    String message = recruiterService.updaterProfile(r);
+	    // Password validation only if provided
+	    if (password != null && !password.trim().isEmpty()) {
+	        if (password.length() < 8 || password.length() > 50) {
+	            ModelAndView mv = new ModelAndView("reditprofile");
+	            mv.addObject("errorMessage", "Password must be between 8 and 50 characters");
+	            return mv;
+	        }
+	    }
 
-	    // Update session with the latest data
-	    Recruiter updatedRecruiter = recruiterService.getrecruiterbyid(rec.getId());
-	    session.setAttribute("recruiter", updatedRecruiter);
+	    // Run JSR-380 validation
+	    Set<ConstraintViolation<Recruiter>> violations = validator.validate(r);
+	    if (!violations.isEmpty()) {
+	        ModelAndView mv = new ModelAndView("reditprofile");
+	        mv.addObject("errorMessage", violations.iterator().next().getMessage());
+	        return mv;
+	    }
 
-	    return new ModelAndView("redirect:/recruiter/rsettings");
+	    try {
+	        String message = recruiterService.updaterProfile(r);
+	        // Update session with the latest data
+	        Recruiter updatedRecruiter = recruiterService.getrecruiterbyid(rec.getId());
+	        session.setAttribute("recruiter", updatedRecruiter);
+	        return new ModelAndView("redirect:/recruiter/rsettings");
+	    } catch (Exception e) {
+	        ModelAndView mv = new ModelAndView("reditprofile");
+	        if (e.getMessage() != null && e.getMessage().contains("Duplicate entry")) {
+	            mv.addObject("errorMessage", "Contact Number is already in use by another account!");
+	        } else {
+	            mv.addObject("errorMessage", "Profile update failed: " + e.getMessage());
+	        }
+	        return mv;
+	    }
 	}
 
+
+	@GetMapping("checkreclogin")
+	public ModelAndView checkrecloginGet() {
+		return new ModelAndView("redirect:/recruiter/rlogin");
+	}
 
 	@PostMapping("checkreclogin")
 	public ModelAndView checkreclogin(HttpServletRequest request) {
@@ -184,14 +253,15 @@ public class RecruiterController {
 		String remail = request.getParameter("remail");
 		String rpwd = request.getParameter("rpwd");
 		Recruiter recruiter = recruiterService.checkreclogin(remail, rpwd);
-		System.out.println(recruiter);
 		if (recruiter != null) {
+			logger.info("Recruiter login successful for email: {}", remail);
 			HttpSession session = request.getSession();
 			session.setAttribute("recruiter", recruiter);
 			mv.setViewName("redirect:/recruiter/rhome");
 		}
 
 		else {
+			logger.warn("Recruiter login failed for email: {}", remail);
 			mv.setViewName("rlogin");
 			mv.addObject("message", "login failed");
 		}
@@ -279,7 +349,18 @@ public class RecruiterController {
 		String jemail = request.getParameter("jemail");
 		String description = request.getParameter("jdescription");
 		String deadline = request.getParameter("jdeadline");
-		int maxappl =   Integer.parseInt( request.getParameter("jmaxappl"));
+		
+		int maxappl = 0;
+		try {
+			String maxapplStr = request.getParameter("jmaxappl");
+			if (maxapplStr != null && !maxapplStr.trim().isEmpty()) {
+				maxappl = Integer.parseInt(maxapplStr.trim());
+			}
+		} catch (NumberFormatException e) {
+			ModelAndView mv = new ModelAndView("radd_job_posting");
+			mv.addObject("error", "Maximum Acceptable Applications must be a valid number");
+			return mv;
+		}
 		
 		HttpSession session = request.getSession();
 		Recruiter r = (Recruiter) session.getAttribute("recruiter");
@@ -300,9 +381,17 @@ public class RecruiterController {
 		job.setEmail(jemail);
 		job.setMaxapplications(maxappl);
 		job.setStatus("Active");
+
+		// Run JSR-380 validation
+		Set<ConstraintViolation<Jobs>> violations = validator.validate(job);
+		if (!violations.isEmpty()) {
+			ModelAndView mv = new ModelAndView("radd_job_posting");
+			mv.addObject("error", violations.iterator().next().getMessage());
+			return mv;
+		}
+
 		String msg = recruiterService.addingjob(job);
 		
-
 		ModelAndView mv = new ModelAndView("radd_job_posting");
 		mv.addObject("message", msg);
 
@@ -344,7 +433,19 @@ public class RecruiterController {
 		String jemail = request.getParameter("jemail");
 		String description = request.getParameter("jdescription");
 		String deadline = request.getParameter("jdeadline");
-		int maxappl =   Integer.parseInt( request.getParameter("jmaxappl"));
+		
+		int maxappl = 0;
+		try {
+			String maxapplStr = request.getParameter("jmaxappl");
+			if (maxapplStr != null && !maxapplStr.trim().isEmpty()) {
+				maxappl = Integer.parseInt(maxapplStr.trim());
+			}
+		} catch (NumberFormatException e) {
+			ModelAndView mv = new ModelAndView("redit_job_posting");
+			mv.addObject("job", j);
+			mv.addObject("error", "Maximum Acceptable Applications must be a valid number");
+			return mv;
+		}
 		
 		HttpSession session = request.getSession();
 		Recruiter r = (Recruiter) session.getAttribute("recruiter");
@@ -366,13 +467,21 @@ public class RecruiterController {
 		job.setEmail(jemail);
 		job.setMaxapplications(maxappl);
 		job.setStatus("Active");
+
+		// Run JSR-380 validation
+		Set<ConstraintViolation<Jobs>> violations = validator.validate(job);
+		if (!violations.isEmpty()) {
+			ModelAndView mv = new ModelAndView("redit_job_posting");
+			mv.addObject("job", job);
+			mv.addObject("error", violations.iterator().next().getMessage());
+			return mv;
+		}
+
 		String msg = recruiterService.updatejob(job);
 
 		ModelAndView mv = new ModelAndView("redirect:/recruiter/rview_job_postings");
 		redirectAttributes.addFlashAttribute("msg", msg);
 		return mv;
-		
-		
 	}
 
 	@GetMapping("rapplications")
@@ -413,6 +522,7 @@ public class RecruiterController {
 	public ModelAndView rtask() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("rtask");
+		mv.addObject("tasks", recruiterService.viewAllTasks());
 		return mv;
 	}
 
@@ -433,7 +543,7 @@ public class RecruiterController {
 	
 	@GetMapping("/rget_job_details/{jid}")
 	public ModelAndView getJobDetails(@PathVariable("jid") int jid) {
-	    System.out.println("Fetching details for jobId: " + jid);
+	    logger.info("Fetching details for jobId: {}", jid);
 	    Jobs job = recruiterService.getJobById(jid);
 	    ModelAndView mv = new ModelAndView();
 
@@ -487,22 +597,23 @@ public class RecruiterController {
 
         try {
             String taskDescription = request.getParameter("taskDescription");
+            String taskDeadline = request.getParameter("taskDeadline");
             Recruiter recruiter = (Recruiter) session.getAttribute("recruiter");
 
             if (recruiter == null) {
-                throw new Exception("Recruiter is not logged in.");
+                mv.setViewName("redirect:rlogin");
+                return mv;
             }
 
             Task task = new Task();
             task.setDescription(taskDescription);
+            task.setDeadline(taskDeadline);
             recruiterService.addTask(task);
             
-            mv.setViewName("redirect:/recruiter/tasks/list");
-            mv.addObject("message", "Task added successfully");
+            mv.setViewName("redirect:rtask");
         } catch (Exception e) {
             e.printStackTrace();  
-            mv.setViewName("taskerror");
-            mv.addObject("message", "Error occurred while adding task: " + e.getMessage());
+            mv.setViewName("redirect:rtask");
         }
 
         return mv;
@@ -569,7 +680,7 @@ public class RecruiterController {
     		mv.setViewName("jobapplicants");
     		mv.addObject("applicants", applicants);
     		mv.addObject("jobid", jid);
-    		mv.addObject("jobname",jobname);
+    		mv.addObject("jobname", org.springframework.web.util.HtmlUtils.htmlEscape(jobname));
     	}
     	else
     	{
@@ -589,7 +700,7 @@ public class RecruiterController {
     	{
     		mv.setViewName("jobinterviews");
     		mv.addObject("applicants", applicants);
-    		mv.addObject("jobname",jobname);
+    		mv.addObject("jobname", org.springframework.web.util.HtmlUtils.htmlEscape(jobname));
     		mv.addObject("jobid", jid);
     	}
     	else
@@ -734,8 +845,7 @@ public class RecruiterController {
 		
 		String subject = null;
 		String content = null;
-		
-		 System.out.println("selection mail sending");
+		logger.info("Sending selection/rejection email to candidate: {} for position: {}", name, position);
 		
 		if (status.equalsIgnoreCase("Selected")) {
 			subject = "Job Offer for " + position + " position at " + company;
@@ -756,7 +866,7 @@ public class RecruiterController {
 		            + "<p style='font-size: 14px; color: #777;'>The Recruitment Team</p>"
 		            + "</div>";
 		    
-		    System.out.println("selection mail sent");
+		    logger.info("Selection email structure generated successfully for candidate: {}", name);
 	    } else if (status.equalsIgnoreCase("Rejected")) {
 	        subject = "Application Update for " + position + " position at " + company;
 	        content = "<div style='font-family: Arial, sans-serif; color: #333;'>"
@@ -798,7 +908,46 @@ public class RecruiterController {
 	}
 	
 	
-	
+	@RequestMapping("/recruiter/chat")
+	public class RecruiterChatBotController {
+
+	    @PostMapping
+	    public ResponseEntity<String> handleChat(@RequestBody String message) {
+	        message = message.toLowerCase();
+	        String response = getBotResponse(message);
+	        return ResponseEntity.ok(response);
+	    }
+
+	    private String getBotResponse(String message) {
+	        if (message.contains("post job")) {
+	            return "Go to the 'Job Postings' section to create a new job post.";
+	        } else if (message.contains("view applications") || message.contains("student applications")) {
+	            return "Navigate to 'Student Applications' in the dashboard to view them.";
+	        } else if (message.contains("create a job post")) {
+	            return "Sure! Please provide the job title, company name, and job description in order.";
+	        } else if (message.contains("schedule interview")) {
+	            return "Please specify candidate name, date and time to schedule the interview.";
+	        } else if (message.contains("today's interviews")) {
+	            return "You have 2 interviews scheduled for today at 11:00 AM and 3:00 PM."; // Ideally fetched from DB
+	        } else if (message.contains("find candidates") || message.contains("search candidates")) {
+	            return "You can use the 'Candidates' tab with filters like skills, experience, or qualification.";
+	        } else if (message.contains("update profile")) {
+	            return "Go to the 'Settings' > 'Profile' section to update your company profile.";
+	        } else if (message.contains("support")) {
+	            return "You can reach out to support at support@careerstream.com or use the Help section.";
+	        } else if (message.contains("edit job")) {
+	            return "Visit 'Job Postings', click on the job you want to edit, and hit 'Edit'.";
+	        } else if (message.contains("show me stats")) {
+	            return "You posted 5 jobs, received 80 applications, and shortlisted 12 candidates.";
+	        } else if (message.contains("rejection message")) {
+	            return "Suggested message: 'We appreciate your application. Unfortunately, you weren’t shortlisted.'";
+	        } else if (message.contains("interview invite")) {
+	            return "Suggested message: 'You are invited for an interview scheduled on [date] at [time].'";
+	        } else {
+	            return "I'm here to help! Try asking about job posting, viewing applications, scheduling interviews, or more!";
+	        }
+	    }
+	    }
 	
 	
     

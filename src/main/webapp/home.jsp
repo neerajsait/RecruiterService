@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<style>
+<style nonce="${cspNonce}">
 * {
     margin: 0;
     padding: 0;

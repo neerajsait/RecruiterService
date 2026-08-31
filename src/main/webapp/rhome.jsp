@@ -1,97 +1,17 @@
 <%@page import="com.klef.jfsd.springboot.model.Recruiter"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
- 
-<%
-Recruiter r = (Recruiter)session.getAttribute("recruiter");
-if (r == null) {
-    response.sendRedirect("rsessionexpiry");
-    return;
-}
-else if(r.getStatus().equals("Blocked"))
-{
-	response.sendRedirect("rblocked");
-	return;
-}
-else if(r.getStatus().equals("PENDING"))
-{
-	response.sendRedirect("rpending");
-	return;
-}
-
-%>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recruiter Dashboard</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        /* Keep existing sidebar styles */
-        .sidebar-container { /* ... existing sidebar styles ... */ }
-
-        /* New Professional Styles */
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e40af;
-            --success-color: #059669;
-            --warning-color: #d97706;
-            --text-primary: #1f2937;
-            --text-secondary: #4b5563;
-            --background-light: #f3f4f6;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--background-light);
-        }
-
-        .main-content {
-            padding: 2rem;
-            margin-left: 290px;
-        }
-
-        header {
-            background-color: white;
-            padding: 1.5rem 2rem;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-info span {
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .logout-btn {
-            background-color: #ef4444;
-            color: white;
-            border: none;
-            padding: 0.5rem 1.25rem;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .logout-btn:hover {
-            background-color: #dc2626;
-        }
+<%@ include file="recruiter_header.jsp" %>
+<style nonce="<%= request.getAttribute("cspNonce") %>">
+    :root {
+        --primary-color: #2563eb;
+        --secondary-color: #1e40af;
+        --success-color: #059669;
+        --warning-color: #d97706;
+        --text-primary: #1f2937;
+        --text-secondary: #4b5563;
+        --background-light: #f3f4f6;
+    }
 
         .dashboard-stats {
             display: grid;
@@ -213,62 +133,11 @@ else if(r.getStatus().equals("PENDING"))
         }
 
         @media (max-width: 768px) {
-            .main-content {
-                margin-left: 0;
-                padding: 1rem;
-            }
-
-            header {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
             .dashboard-stats {
                 grid-template-columns: 1fr;
             }
         }
-    </style>
-</head>
-<body>
-    <div class="sidebar-container">
-    <!-- Menu Icon (Hamburger) -->
-    <div class="menu-icon">
-        <i class="fas fa-bars" onclick="toggleSidebar()"></i>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header"><br><br>
-            <h2>Welcome <%= r.getName() %></h2>
-        </div>
-        <ul>
-            <li><a href="rhome"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-btn" onclick="toggleDropdown('jobPostings')">
-                    <i class="fas fa-briefcase"></i> Manage Job Postings
-                    <span class="arrow">&#9662;</span>
-                </a>
-                <ul class="dropdown-content" id="jobPostings-dropdown">
-                    <li><a href="rview_job_postings"><i class="fas fa-eye"></i> View Job Postings</a></li>
-                    
-                    <li><a href="radd_job_posting"><i class="fas fa-plus"></i> Add New Posting</a></li>
-                </ul>
-            </li>
-            <li><a href="jobapplications"><i class="fas fa-file-alt"></i> View Applications</a></li>
-            <li><a href="rsettings"><i class="fas fa-cogs"></i> Profile</a></li>
-        </ul>
-    </div>
-</div>
-
-    <div class="main-content">
-        <header>
-            <h1>CareerStream</h1>
-            <div class="user-info">
-                <span><%=r.getName()%></span>
-                <a href="rlogout"><button class="logout-btn">Logout</button></a>
-            </div>
-        </header>
+</style>
 
         <section class="dashboard-stats">
             <div class="stat-card">
@@ -324,13 +193,57 @@ else if(r.getStatus().equals("PENDING"))
                 <i class="fas fa-plus"></i> Add New Task
             </a>
             <ul class="task-list">
-                <li>Post new job opening for Developer</li>
-                <li>Follow up with shortlisted candidates</li>
-                <li>Review applications for Manager position</li>
+                <c:forEach items="${tasks}" var="task">
+                    <li>
+                        <span class="task-desc" style="flex: 1;"><c:out value="${task.description}" /></span>
+                        <button class="complete-btn" onclick="completeTask(this)" style="background-color: #1E3264; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px; font-size: 12px; transition: 0.3s;">Mark as Complete</button>
+                    </li>
+                </c:forEach>
             </ul>
         </section>
-    </div>
+        
 
-    <script src="${pageContext.request.contextPath}/dashboard.js"></script>
-</body>
-</html>
+    <script nonce="<%= request.getAttribute("cspNonce") %>">
+        document.addEventListener('DOMContentLoaded', () => {
+            let completedTasks = JSON.parse(localStorage.getItem('completedTasks') || '[]');
+            const taskItems = document.querySelectorAll('.task-list li');
+            
+            taskItems.forEach(item => {
+                let taskSpan = item.querySelector('.task-desc');
+                if(!taskSpan) return;
+                
+                let taskText = taskSpan.innerText.trim();
+
+                if (completedTasks.includes(taskText)) {
+                    item.style.textDecoration = "line-through";
+                    item.style.opacity = "0.5";
+                    let btn = item.querySelector('.complete-btn');
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.innerText = "Completed";
+                        btn.style.backgroundColor = "#28a745";
+                        btn.style.cursor = "default";
+                    }
+                }
+            });
+        });
+
+        function completeTask(button) {
+            const listItem = button.closest('li');
+            const taskText = listItem.querySelector('.task-desc').innerText.trim();
+
+            listItem.style.textDecoration = "line-through";
+            listItem.style.opacity = "0.5";
+            button.disabled = true;
+            button.innerText = "Completed";
+            button.style.backgroundColor = "#28a745";
+            button.style.cursor = "default";
+            
+            let completedTasks = JSON.parse(localStorage.getItem('completedTasks') || '[]');
+            if (!completedTasks.includes(taskText)) {
+                completedTasks.push(taskText);
+                localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+            }
+        }
+    </script>
+<%@ include file="recruiter_footer.jsp" %>

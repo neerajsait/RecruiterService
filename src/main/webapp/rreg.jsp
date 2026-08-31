@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recruiter Registration</title>
-    <style>
+    <style nonce="<%= request.getAttribute("cspNonce") %>">
         * {
             margin: 0;
             padding: 0;
@@ -215,6 +215,7 @@
             <% } %>
             
             <form method="post" action="insertrec" autocomplete="off">
+                <input type="hidden" name="_csrf" value="<%= request.getAttribute("csrfToken") %>" />
                 <div class="input-group">
                     <label for="rname">Full Name</label>
                     <input 
@@ -299,6 +300,17 @@
                 </div>
 
                 <div class="input-group">
+                    <label for="rpwd_confirm">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="rpwd_confirm" 
+                        name="rpwd_confirm" 
+                        placeholder="Confirm your password"
+                        required 
+                    />
+                </div>
+
+                <div class="input-group">
                     <label for="rcontact">Contact Number</label>
                     <input 
                         type="tel" 
@@ -318,5 +330,6 @@
             </form>
         </div>
     </div>
+    <script src="${pageContext.request.contextPath}/dashboard.js"></script>
 </body>
 </html>

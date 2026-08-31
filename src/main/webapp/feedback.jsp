@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -5,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feedback</title>
   <link rel="stylesheet" href="./css/feedback.css">
- 	
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+  	
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
+  <style nonce="<%= request.getAttribute("cspNonce") %>">
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 * {
   margin: 0;
@@ -207,6 +208,7 @@ nav .navbar .menu {
     <h1>We Value Your Feedback</h1>
     <p>Please share your thoughts and suggestions below.</p>
     <form action="#" method="POST">
+       <input type="hidden" name="_csrf" value="<%= request.getAttribute("csrfToken") %>" />
       <label for="name">Name:</label>
       <input type="text" id="name" name="name" placeholder="Your Name" required>
 
