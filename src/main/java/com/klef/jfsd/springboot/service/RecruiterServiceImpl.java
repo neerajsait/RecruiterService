@@ -58,7 +58,11 @@ public class RecruiterServiceImpl implements RecruiterService
 
 	@Override
 	public Recruiter checkreclogin(String email, String pwd) {
-		return recruiterRepository.checkreclogin(email, pwd);
+		Recruiter recruiter = recruiterRepository.findByEmail(email);
+		if (recruiter != null && passwordEncoder.matches(pwd, recruiter.getPassword())) {
+			return recruiter;
+		}
+		return null;
 	}
 
 	@Override
