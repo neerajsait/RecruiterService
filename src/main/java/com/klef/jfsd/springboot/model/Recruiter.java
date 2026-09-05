@@ -46,8 +46,8 @@ public class Recruiter
 	@Size(max = 50, message = "Email must not exceed 50 characters")
 	private String email;
 
-	@Column(name="rec_password",nullable=false,length = 50)
-	@Size(max = 50, message = "Password must not exceed 50 characters")
+	@Column(name="rec_password",nullable=false,length = 100)
+	@Size(max = 100, message = "Password must not exceed 100 characters")
 	private String password;
 
 	@Column(name="rec_location",nullable=false,length=50)

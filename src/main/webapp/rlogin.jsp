@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -180,6 +181,21 @@
                 padding: 30px;
             }
         }
+
+        .error-msg {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 1px solid #ef9a9a;
+        }
     </style>
 </head>
 <body>
@@ -190,6 +206,11 @@
         </div>
         <div class="login-form">
             <h1><i class="fas fa-user-tie"></i>Recruiter Login</h1>
+            <c:if test="${not empty message}">
+                <div class="error-msg">
+                    <i class="fas fa-exclamation-triangle"></i> Incorrect Email or Password.
+                </div>
+            </c:if>
             <form action="checkreclogin" method="post">
                 <input type="hidden" name="_csrf" value="<%= request.getAttribute("csrfToken") %>" />
                 <div class="form-group">

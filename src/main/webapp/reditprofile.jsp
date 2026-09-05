@@ -100,6 +100,7 @@
         <div class="edit-profile-container">
             <div class="edit-profile-title">Edit Profile</div>
             <form action="rprofileupdate" method="post" class="edit-profile-form">
+                <input type="hidden" name="_csrf" value="<%= request.getAttribute("csrfToken") %>" />
                 <div class="form-columns">
                     
                     <div class="form-col">
@@ -133,7 +134,7 @@
                         </div>
                         <div class="form-group">
                             <label>Company</label>
-                            <input type="text" name="rcompany" value="<%=r.getCompany() %>" readonly>
+                            <input type="text" name="rcompany" value="<%=r.getCompany() %>" required>
                         </div>
                         <div class="form-group">
                             <label>Location</label>

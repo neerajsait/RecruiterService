@@ -192,6 +192,7 @@ public class RecruiterServiceImpl implements RecruiterService
 	}
 
 	@Override
+	@org.springframework.transaction.annotation.Transactional
 	public String updatejob(Jobs job) 
 	{
 		System.out.println("Updating job with ID: " + job.getId());

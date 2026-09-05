@@ -112,6 +112,16 @@
     
     
                 <div class="form-grid">
+                    <c:if test="${not empty error}">
+                        <div class="form-full-width" style="color: red; background-color: #fee2e2; padding: 12px; border-radius: 8px; border: 1px solid #ef4444; margin-bottom: 16px;">
+                            ${error}
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty message}">
+                        <div class="form-full-width" style="color: green; background-color: #dcfce7; padding: 12px; border-radius: 8px; border: 1px solid #22c55e; margin-bottom: 16px;">
+                            ${message}
+                        </div>
+                    </c:if>
                     <div class="form-section-title">Basic Information</div>
                     
                     <div class="form-group">

@@ -118,7 +118,7 @@
                 <h3>Current Tasks</h3>
                 <ul id="taskList">
                     <c:forEach items="${tasks}" var="task">
-                        <li>
+                        <li data-task-id="${task.id}">
                             <span class="task-desc" style="flex: 1;"><c:out value="${task.description}" /></span>
                             <input type="date" class="task-date" value="${task.deadline}" readonly>
                             <button class="complete-btn" onclick="completeTask(this)">Mark as Complete</button>
@@ -145,12 +145,10 @@
             const taskItems = document.querySelectorAll('.task-list li');
             
             taskItems.forEach(item => {
-                let taskSpan = item.querySelector('.task-desc');
-                if(!taskSpan) return;
-                
-                let taskText = taskSpan.innerText.trim();
+                let taskId = item.getAttribute('data-task-id');
+                if(!taskId) return;
 
-                if (completedTasks.includes(taskText)) {
+                if (completedTasks.includes(taskId)) {
                     item.style.textDecoration = "line-through";
                     item.style.opacity = "0.5";
                     let btn = item.querySelector('.complete-btn');
@@ -166,7 +164,8 @@
 
         function completeTask(button) {
             const listItem = button.closest('li');
-            const taskText = listItem.querySelector('.task-desc').innerText.trim();
+            const taskId = listItem.getAttribute('data-task-id');
+            if(!taskId) return;
 
             listItem.style.textDecoration = "line-through";
             listItem.style.opacity = "0.5";
@@ -176,8 +175,8 @@
             button.style.cursor = "default";
             
             let completedTasks = JSON.parse(localStorage.getItem('completedTasks') || '[]');
-            if (!completedTasks.includes(taskText)) {
-                completedTasks.push(taskText);
+            if (!completedTasks.includes(taskId)) {
+                completedTasks.push(taskId);
                 localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
             }
         }
