@@ -26,12 +26,14 @@ echo "=================================================="
 echo ""
 
 # 4. (Optional) Send an email notification using Resend (resend.com)
-# Create a free account on resend.com, go to API Keys, and paste your key below.
-# Put your personal email address in the TO_EMAIL variable (it must match the one you signed up to Resend with).
-RESEND_API_KEY=
-TO_EMAIL="YOUR_EMAIL_ADDRESS_HERE"
+# Load variables securely from .env file
+if [ -f .env ]; then
+    set -a
+    source .env
+    set +a
+fi
 
-if [ "$RESEND_API_KEY" != "YOUR_RESEND_API_KEY_HERE" ]; then
+if [ -n "$RESEND_API_KEY" ] && [ -n "$TO_EMAIL" ]; then
     echo "Sending email notification via Resend..."
     curl -X POST 'https://api.resend.com/emails' \
          -H "Authorization: Bearer $RESEND_API_KEY" \
