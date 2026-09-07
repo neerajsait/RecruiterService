@@ -48,11 +48,21 @@ public class RecruiterServiceImpl implements RecruiterService
 	
 	@Autowired
 	private DocumentsRepository documentsRepository;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public String RecruiterRegistration(Recruiter re) {
 		re.setPassword(passwordEncoder.encode(re.getPassword()));
 		recruiterRepository.save(re);
+		
+		try {
+			emailService.sendRegistrationPendingEmail(re.getEmail(), re.getName());
+		} catch (Exception e) {
+			System.out.println("Failed to send email: " + e.getMessage());
+		}
+		
 		return "Congratulations! Your Account Has Been Created 😀";
 	}
 
@@ -88,6 +98,13 @@ public class RecruiterServiceImpl implements RecruiterService
 	
 	
 
+	
+	@Override
+	public void updateFirstLoginStatus(Recruiter recruiter) {
+	    Recruiter r = recruiterRepository.findById(recruiter.getId()).get();
+	    r.setHasCompletedFirstLogin(recruiter.isHasCompletedFirstLogin());
+	    recruiterRepository.save(r);
+	}
 	
 	//jobs
 	@Override

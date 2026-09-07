@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Delete Job Post</title>
-    <style nonce="<%= request.getAttribute("cspNonce") %>">
+    <style nonce="${cspNonce}">
         table {
             width: 100%;
             max-width: 1200px;

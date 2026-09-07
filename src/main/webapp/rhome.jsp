@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ include file="recruiter_header.jsp" %>
-<style nonce="<%= request.getAttribute("cspNonce") %>">
+<style nonce="${cspNonce}">
     :root {
         --primary-color: #2563eb;
         --secondary-color: #1e40af;
@@ -203,7 +203,7 @@
         </section>
         
 
-    <script nonce="<%= request.getAttribute("cspNonce") %>">
+    <script nonce="${cspNonce}">
         document.addEventListener('DOMContentLoaded', () => {
             let completedTasks = JSON.parse(localStorage.getItem('completedTasks') || '[]');
             const taskItems = document.querySelectorAll('.task-list li');

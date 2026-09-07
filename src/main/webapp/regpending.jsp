@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recruiter Portal - Registration Pending</title>
-    <style nonce="<%= request.getAttribute("cspNonce") %>">
+    <style nonce="${cspNonce}">
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
         body {
             font-family: poppins, sans-serif;
@@ -43,6 +43,20 @@
             font-size: 18px;
             color: #2d0374;
             line-height: 1.5;
+            margin-bottom: 30px;
+        }
+        .login-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1E3264;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .login-link:hover {
+            background-color: #1A2B57;
         }
     </style>
 </head>
@@ -52,7 +66,8 @@
     </div>
     <div class="text-section">
         <h1>Registration Pending</h1>
-        <p>Your registration is under review. Access will be granted once approved by the admin. Please wait for further updates or contact support for assistance.</p>
+        <p>Your registration is under review. However, if you are attempting to bypass this page, please retry login, you will get into the dashboard.</p>
+        <a href="rlogin" class="login-link">Login Here</a>
     </div>
 </body>
 </html>

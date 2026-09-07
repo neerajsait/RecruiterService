@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ include file="recruiter_header.jsp" %>
-<style nonce="<%= request.getAttribute("cspNonce") %>">
+<style nonce="${cspNonce}">
         
         table {
             width: 100%;

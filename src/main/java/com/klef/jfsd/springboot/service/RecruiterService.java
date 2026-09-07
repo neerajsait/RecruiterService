@@ -44,6 +44,7 @@ public interface RecruiterService
 	 public Education findstudenteducationdetails(long id);
 	 public Documents getdocumentsbyid(long id);
 	 public String updatestudentjobstatus(String status, int sid);
+	 public void updateFirstLoginStatus(Recruiter recruiter);
 	 
 	 
 	 //dashboard

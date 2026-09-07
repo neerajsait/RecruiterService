@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ include file="recruiter_header.jsp" %>
-<style nonce="<%= request.getAttribute("cspNonce") %>">
+<style nonce="${cspNonce}">
     .edit-profile-container {
         background-color: white;
         border-radius: 12px;
@@ -134,7 +134,7 @@
                         </div>
                         <div class="form-group">
                             <label>Company</label>
-                            <input type="text" name="rcompany" value="<%=r.getCompany() %>" required>
+                            <input type="text" name="rcompany" value="<%=r.getCompany() %>" readonly>
                         </div>
                         <div class="form-group">
                             <label>Location</label>

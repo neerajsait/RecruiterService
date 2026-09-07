@@ -15,11 +15,7 @@ else if(recruiterLayout.getStatus().equals("Blocked"))
 	response.sendRedirect("rblocked");
     return;
 }
-else if(recruiterLayout.getStatus().equals("PENDING"))
-{
-	response.sendRedirect("rpending");
-    return;
-}
+
 Recruiter r = recruiterLayout;
 %>
 <!DOCTYPE html>
@@ -30,7 +26,7 @@ Recruiter r = recruiterLayout;
     <title>Recruiter Dashboard</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script nonce="<%= request.getAttribute("cspNonce") %>">
+    <script nonce="${cspNonce}">
         window.addEventListener('pageshow', function (event) {
             if (event.persisted) {
                 window.location.reload();

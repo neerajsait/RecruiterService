@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recruiter Portal - Registration Pending</title>
-    <style nonce="<%= request.getAttribute("cspNonce") %>">
+    <style nonce="${cspNonce}">
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
         body {
             font-family: poppins, sans-serif;

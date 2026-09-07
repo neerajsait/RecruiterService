@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style nonce="<%= request.getAttribute("cspNonce") %>">
+  <style nonce="${cspNonce}">
   @charset "UTF-8";
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 * {

@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ include file="recruiter_header.jsp" %>
-<style nonce="<%= request.getAttribute("cspNonce") %>">
+<style nonce="${cspNonce}">
         
         .table-hover tbody tr:hover {
             background-color: rgba(0, 123, 255, 0.1);
@@ -511,57 +511,77 @@
                     </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="applicant" items="${applicants}">
-                
-                <c:if test="${applicant.status == 'Interview'}">
-                
-                
-                    <tr>
-                        <td>${applicant.student.name }</td>
-       					<td>${applicant.student.id}</td>
-        				
-        				<td>
-        				<button class="btn btn-profile" onclick="window.open('/recruiter/getstudentdetails?id=${applicant.student.id}', '_blank')">
-    										<i class="fas fa-eye"></i> View Profile
-						</button>
-						</td>
-        				<td>
-        				<c:choose>
-        								<c:when test="${applicant.status == 'APPLIED'}">
-								            <span class="status-badge status-pending">${applicant.status}</span>
-								        </c:when>
-								        <c:when test="${applicant.status == 'Interview'}">
-								            <span class="status-badge status-interview">${applicant.status}</span>
-								        </c:when>
-								        <c:when test="${applicant.status == 'Shortlisted'}">
-								            <span class="status-badge status-shortlisted">${applicant.status}</span>
-								        </c:when>
-								        <c:when test="${applicant.status == 'Selected'}">
-								            <span class="status-badge status-accepted">${applicant.status}</span>
-								        </c:when>
-								        <c:otherwise>
-								            <span class="status-badge status-rejected">${applicant.status}</span>
-								        </c:otherwise>
-								</c:choose>
-        				</td>
-        				
-                        <td>
-                        <c:if test="${applicant.status != 'Selected'}">
-        						<div class="d-flex gap-2">
-            						<button class="btn btn-interview" title="Accept" onclick="window.location.href='/recruiter/setinterviewstatus/${applicant.id}/Selected'">
-               						 <i class="fas fa-check"></i>
-            						</button>
-            						<button class="btn btn-reject" title="Reject" onclick="window.location.href='/recruiter/setinterviewstatus/${applicant.id}/Rejected'">
-                						<i class="fas fa-times"></i>
-            						</button>
-        						</div>
-    					</c:if>
-                        </td>
-                        
-                    </tr>
-                    
-                    </c:if>
-                    </c:forEach>
+                <c:choose>
+                    <c:when test="${not empty applicants}">
+                        <c:forEach var="applicant" items="${applicants}">
+                            <c:if test="${applicant.status == 'Interview'}">
+                                <tr>
+                                    <td>${applicant.student.name}</td>
+                                    <td>${applicant.student.id}</td>
+                                    <td>
+                                        <button class="btn btn-profile" onclick="window.open('/recruiter/getstudentdetails?id=${applicant.student.id}', '_blank')">
+                                            <i class="fas fa-eye"></i> View Profile
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${applicant.status == 'APPLIED'}">
+                                                <span class="status-badge status-pending">${applicant.status}</span>
+                                            </c:when>
+                                            <c:when test="${applicant.status == 'Interview'}">
+                                                <span class="status-badge status-interview">${applicant.status}</span>
+                                            </c:when>
+                                            <c:when test="${applicant.status == 'Shortlisted'}">
+                                                <span class="status-badge status-shortlisted">${applicant.status}</span>
+                                            </c:when>
+                                            <c:when test="${applicant.status == 'Selected'}">
+                                                <span class="status-badge status-accepted">${applicant.status}</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="status-badge status-rejected">${applicant.status}</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td>
+                                        <c:if test="${applicant.status != 'Selected'}">
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-interview" title="Accept" onclick="window.location.href='/recruiter/setinterviewstatus/${applicant.id}/Selected'">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button class="btn btn-reject" title="Reject" onclick="window.location.href='/recruiter/setinterviewstatus/${applicant.id}/Rejected'">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </c:if>
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <!-- Mock Data Row 1 (Interview Status) -->
+                        <tr>
+                            <td>Jane Smith (Mock)</td>
+                            <td>31002</td>
+                            <td>
+                                <button class="btn btn-profile" onclick="window.open('/recruiter/getstudentdetails?id=31002', '_blank')">
+                                    <i class="fas fa-eye"></i> View Profile
+                                </button>
+                            </td>
+                            <td><span class="status-badge status-interview">Interview</span></td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-interview" title="Accept" onclick="alert('Mock Action: Accept Candidate')">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-reject" title="Reject" onclick="alert('Mock Action: Reject Candidate')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
                 </tbody>
             </table>
             
@@ -569,7 +589,7 @@
     </div>
     
     </div>
-    <script nonce="<%= request.getAttribute("cspNonce") %>">
+    <script nonce="${cspNonce}">
  // Dropdown functionality
     const filterButton = document.querySelector('.filter-button');
     const filterDropdown = document.querySelector('.filter-dropdown');

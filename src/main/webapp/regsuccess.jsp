@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration Success</title>
-    <style nonce="<%= request.getAttribute("cspNonce") %>">
+    <style nonce="${cspNonce}">
        
         * {
             margin: 0;

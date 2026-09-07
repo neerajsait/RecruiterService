@@ -63,6 +63,9 @@ public class Recruiter
 	@Column(name="rec_status",nullable=false,length = 50)
 	private String status;
 	
+	@Column(name="has_completed_first_login", nullable=false, columnDefinition = "boolean default false")
+	private boolean hasCompletedFirstLogin;
+	
 	
 
 	
@@ -126,6 +129,12 @@ public class Recruiter
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public boolean isHasCompletedFirstLogin() {
+		return hasCompletedFirstLogin;
+	}
+	public void setHasCompletedFirstLogin(boolean hasCompletedFirstLogin) {
+		this.hasCompletedFirstLogin = hasCompletedFirstLogin;
 	}
 	
 	

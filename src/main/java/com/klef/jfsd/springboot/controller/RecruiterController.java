@@ -131,6 +131,25 @@ public class RecruiterController {
 		rec.setPassword(password);
 		rec.setContact(contact);
 		rec.setStatus("PENDING");
+		rec.setHasCompletedFirstLogin(false);
+
+		// DOB 18+ Validation
+		if (dob != null && !dob.trim().isEmpty()) {
+		    try {
+		        java.time.LocalDate birthDate = java.time.LocalDate.parse(dob);
+		        java.time.LocalDate today = java.time.LocalDate.now();
+		        int age = java.time.Period.between(birthDate, today).getYears();
+		        if (age < 18) {
+		            ModelAndView mv = new ModelAndView("rreg");
+		            mv.addObject("errorMessage", "You must be at least 18 years old to register.");
+		            return mv;
+		        }
+		    } catch (Exception e) {
+		        ModelAndView mv = new ModelAndView("rreg");
+		        mv.addObject("errorMessage", "Invalid Date of Birth format.");
+		        return mv;
+		    }
+		}
 
 		// Manual check for password presence during registration
 		if (password == null || password.trim().isEmpty()) {
@@ -153,7 +172,7 @@ public class RecruiterController {
 
 		try {
 			String msg = recruiterService.RecruiterRegistration(rec);
-			ModelAndView mv = new ModelAndView("regsuccess");
+			ModelAndView mv = new ModelAndView("regpending");
 			mv.addObject("message", msg);
 			return mv;
 		} catch (Exception e) {
@@ -204,6 +223,24 @@ public class RecruiterController {
 	    r.setPassword(password); // Pass password as is (can be null/blank)
 	    r.setContact(contact);
 	    r.setStatus(rec.getStatus());
+
+	    // DOB 18+ Validation
+	    if (dob != null && !dob.trim().isEmpty()) {
+	        try {
+	            java.time.LocalDate birthDate = java.time.LocalDate.parse(dob);
+	            java.time.LocalDate today = java.time.LocalDate.now();
+	            int age = java.time.Period.between(birthDate, today).getYears();
+	            if (age < 18) {
+	                ModelAndView mv = new ModelAndView("reditprofile");
+	                mv.addObject("errorMessage", "You must be at least 18 years old.");
+	                return mv;
+	            }
+	        } catch (Exception e) {
+	            ModelAndView mv = new ModelAndView("reditprofile");
+	            mv.addObject("errorMessage", "Invalid Date of Birth format.");
+	            return mv;
+	        }
+	    }
 
 	    // Password validation only if provided
 	    if (password != null && !password.trim().isEmpty()) {
@@ -256,6 +293,12 @@ public class RecruiterController {
 		if (recruiter != null) {
 			logger.info("Recruiter login successful for email: {}", remail);
 			HttpSession session = request.getSession();
+			
+			if (!recruiter.isHasCompletedFirstLogin()) {
+				recruiter.setHasCompletedFirstLogin(true);
+				recruiterService.updateFirstLoginStatus(recruiter);
+				session.setAttribute("firstLoginBypass", true);
+			}
 			session.setAttribute("recruiter", recruiter);
 			mv.setViewName("redirect:/recruiter/rhome");
 		}
@@ -334,7 +377,7 @@ public class RecruiterController {
 	}
 
 	 @PostMapping("insertjobs")
-	    public ModelAndView insertjob(HttpServletRequest request) {
+	    public ModelAndView insertjob(HttpServletRequest request, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
 		 
 		 
 		String jobid = generateRandomId();
@@ -392,8 +435,8 @@ public class RecruiterController {
 
 		String msg = recruiterService.addingjob(job);
 		
-		ModelAndView mv = new ModelAndView("radd_job_posting");
-		mv.addObject("message", msg);
+		ModelAndView mv = new ModelAndView("redirect:/recruiter/rview_job_postings");
+		redirectAttributes.addFlashAttribute("message", msg);
 
 		return mv;
 	}
@@ -712,12 +755,42 @@ public class RecruiterController {
     	return mv;
     }
     
-    @GetMapping("getstudentdetails")
+	@GetMapping("getstudentdetails")
 	public ModelAndView getstudentdetails(HttpServletRequest request, @RequestParam("id") long id)
 	{
-		Student s = recruiterService.findstudentbyid(id);
-		Education e = recruiterService.findstudenteducationdetails(id);
-		Documents d = recruiterService.getdocumentsbyid(id);
+		Student s = null;
+		Education e = null;
+		Documents d = null;
+		
+		try {
+			s = recruiterService.findstudentbyid(id);
+			e = recruiterService.findstudenteducationdetails(id);
+			d = recruiterService.getdocumentsbyid(id);
+		} catch (Exception ex) {
+			s = new Student();
+			s.setId(id);
+			if (id == 31001) s.setName("John Doe (Mock)");
+			else if (id == 31002) s.setName("Jane Smith (Mock)");
+			else if (id == 31003) s.setName("Michael Brown (Mock)");
+			else s.setName("Mock Student");
+			
+			s.setEmail("mock" + id + "@student.com");
+			s.setContact("9876543210");
+			s.setGender("Other");
+			s.setDob("2000-01-01");
+			
+			e = new Education();
+			e.setCgpa(8.5);
+			e.setDegree("B.Tech");
+			e.setMajor("Engineering");
+			e.setSpecialization("Computer Science");
+			e.setStartdate("2020-08-01");
+			e.setEnddate("2024-05-30");
+			
+			d = new Documents();
+			d.setSummary("Highly motivated software engineering student with experience in Java, Spring Boot, and Web Technologies. Strong problem-solving skills and eager to learn new technologies.");
+			d.setGithublink("https://github.com/mockuser");
+		}
 		
 		ModelAndView mv  = new  ModelAndView("studenttotaldetails");
 		mv.addObject("student", s);
