@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # 1. The Spring Boot Application
+  app:
+    build: .
+    restart: always
+    environment:
+      # Tell Spring Boot to connect to the Docker MySQL container instead of localhost
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/recruiter_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - db
+
+  # 2. The MySQL Database
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=recruiter_db
+    volumes:
+      # This ensures database data is saved even if the container restarts
+      - db_data:/var/lib/mysql
+
+  # 3. The Cloudflare Quick Tunnel
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    # Tells Cloudflare to tunnel traffic directly to our Spring Boot app
+    command: tunnel --url http://app:8080
+    depends_on:
+      - app
+
+volumes:
+  db_data:

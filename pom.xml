@@ -11,7 +11,7 @@
 	<groupId>com.klef.jfsd.springboot</groupId>
 	<artifactId>RecruiterService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>SpringBootMVCSDPProjectRecruiter</name>
 	<description>Demo project for Spring Boot Project</description>
 	<url/>
