@@ -16,7 +16,7 @@ WORKDIR /app
 COPY --from=builder /app/target/*.war app.war
 
 # Expose the default Spring Boot port
-EXPOSE 8080
+EXPOSE 2007
 
 # Run the WAR file
 ENTRYPOINT ["java", "-jar", "app.war"]

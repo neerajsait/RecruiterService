@@ -34,7 +34,7 @@ services:
     image: cloudflare/cloudflared:latest
     restart: always
     # Tells Cloudflare to tunnel traffic directly to our Spring Boot app
-    command: tunnel --url http://app:8080
+    command: tunnel --url http://app:2007
     depends_on:
       - app
 
