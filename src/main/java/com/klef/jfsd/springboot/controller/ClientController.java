@@ -36,14 +36,14 @@ public class ClientController
 		return mv;
 	}
 	
-	@GetMapping("feedback")
+	@GetMapping("/feedback")
 	public ModelAndView feedback()
 	{
 		ModelAndView mv = new ModelAndView("feedback");
 		return mv;
 	}
 	
-	@PostMapping("submitfeedback")
+	@PostMapping("/submitfeedback")
 	public ModelAndView submitFeedback(
 			@RequestParam("name") String name,
 			@RequestParam("email") String email,

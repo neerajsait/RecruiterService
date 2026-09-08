@@ -127,10 +127,7 @@ nav .navbar .menu {
     background-attachment: fixed;
     background-position: center top; /* Keeps the image centered at the top */
     background-repeat: no-repeat; /* Prevents repeating of the image */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full height of the viewport */
+    padding-top: 120px;
 }
 .feedback-container {
     max-width: 400px;
@@ -139,8 +136,7 @@ nav .navbar .menu {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     min-height: 150px; /* Decreased minimum height */
-    margin-left: 920px;
-    margin-top: 143px;
+    margin: 0 auto 50px auto; /* Centers horizontally and clears navbar */
 }
 
 

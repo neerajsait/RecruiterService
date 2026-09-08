@@ -63,15 +63,7 @@ nav .navbar .menu {
   font-weight: 500;
   text-decoration: none;
 }
-section {
-  display: flex;
-  height: 80vh; /* Reduced height to bring it up */
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  color: #96c7e8;
-  font-size: 70px;
-}
+
 .button a {
   position: fixed;
   bottom: 20px;
@@ -84,11 +76,11 @@ section {
   box-shadow: rgba(0, 0, 0, 0.15);
 }
 .about {
-  padding: 50px 20px 20px; /* Reduced top padding */
+  padding: 120px 20px 20px;
 }
 .about .container {
   max-width: 800px;
-  margin-top: 246px;
+  margin: 0 auto 20px auto;
   background: #fff;
   padding: 40px;
   border-radius: 10px;
@@ -185,8 +177,8 @@ footer .details .item a:hover {
   <section class="about">
     <div class="container">
       <h1>About Us</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent varius sapien et dolor ultricies, nec elementum mi dictum. Curabitur ultrices est et est fermentum, a interdum nisl condimentum. Integer congue, nunc sit amet vehicula consequat, elit felis blandit lacus, sed tincidunt magna metus nec ligula. In egestas, velit vel faucibus fringilla, ex sapien convallis odio, sit amet lacinia dui eros non lorem.</p>
-      <p>Quisque in nulla non sapien suscipit rhoncus. Morbi aliquet felis et metus lacinia, ac convallis sapien congue. Nullam varius nunc ut ipsum eleifend, id aliquet justo malesuada. Duis euismod turpis eget enim bibendum, non dictum mauris gravida. Proin auctor orci sed eros efficitur, et euismod erat vehicula. Vestibulum dapibus justo at nisi interdum, eu scelerisque mauris lacinia.</p>
+      <p>Welcome to CareerStream! This project is a comprehensive recruiting and job placement platform built with Java, Spring Boot and MySQL. Developed as my core Software Development Project (SDP), CareerStream is built using a modern microservices architecture. This specific application acts as the dedicated Recruiter Service, engineered by me to seamlessly connect top recruiters with talented job seekers through an intuitive portal, while working in tandem with other independent microservices in the ecosystem.</p>
+      <p>What makes CareerStream particularly special is that it was passionately hand-coded and architected entirely before the AI revolution. Every line of code, database schema and CSS layout was painstakingly crafted the traditional way serving as a testament to deep, foundational software engineering skills, perseverance and a genuine love for building complex distributed systems from scratch.</p>
     </div>
   </section>
 

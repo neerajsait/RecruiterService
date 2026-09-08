@@ -32,7 +32,7 @@ public class EmailService {
 
     public void sendFeedbackEmail(String name, String fromEmail, String feedbackMessage) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("ktatwadarsan@gmail.com"); // Should ideally match the authenticated user or be a generic no-reply if not supported
+        message.setFrom("2200030957cseh@gmail.com"); // Should ideally match the authenticated user or be a generic no-reply if not supported
         message.setTo("2200030957cseh@gmail.com");
         message.setSubject("New Feedback from " + name);
         

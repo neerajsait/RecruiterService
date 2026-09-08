@@ -254,10 +254,10 @@
     <a href="redit_job_posting?id=${job.id}" class="text-primary" title="Edit">
         <i class="fas fa-edit"></i>
     </a>
-    <a href="<c:url value='/rdelete_job_posting?id=${job.id}'/>" 
+    <a href="javascript:void(0);" 
        class="text-danger" 
        title="Delete" 
-       onclick="return confirm('Are you sure you want to delete this job posting?');">
+       onclick="openDeleteModal('<c:url value="/rdelete_job_posting?id=${job.id}"/>');">
         <i class="fas fa-trash-alt"></i>
     </a>
     </c:if>
@@ -295,6 +295,20 @@
             <p><strong>Location:</strong> <span id="jobLocation"></span></p>
             <p><strong>Employment Type:</strong> <span id="jobEmploymentType"></span></p>
             <p><strong>Description:</strong> <span id="jobDescription"></span></p>
+        </div>
+    </div>
+
+    </div>
+
+    <div id="deleteConfirmModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <span class="close" onclick="closeDeleteModal()">&times;</span>
+            <h3 style="color: #dc3545; margin-bottom: 15px;">Confirm Deletion</h3>
+            <p style="margin-bottom: 25px; color: #555;">Are you sure you want to delete this job posting? This action cannot be undone.</p>
+            <div style="display: flex; justify-content: center; gap: 15px;">
+                <button onclick="closeDeleteModal()" style="padding: 10px 20px; border: none; background-color: #6c757d; color: white; border-radius: 5px; cursor: pointer; font-size: 16px;">Cancel</button>
+                <a id="confirmDeleteBtn" href="#" style="padding: 10px 20px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px; font-size: 16px;">Yes, Delete</a>
+            </div>
         </div>
     </div>
 
@@ -343,5 +357,25 @@
             });
         }
     });
-    </script>
+    
+    function openDeleteModal(url) {
+        document.getElementById('confirmDeleteBtn').href = url;
+        document.getElementById('deleteConfirmModal').style.display = 'block';
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteConfirmModal').style.display = 'none';
+    }
+
+    // Close modal if user clicks outside of it
+    window.onclick = function(event) {
+        let deleteModal = document.getElementById('deleteConfirmModal');
+        let detailsModal = document.getElementById('jobDetailsModal');
+        if (event.target == deleteModal) {
+            deleteModal.style.display = "none";
+        }
+        if (event.target == detailsModal) {
+            detailsModal.style.display = "none";
+        }
+    }
     </script>

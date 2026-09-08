@@ -64,16 +64,15 @@
       text-decoration: none;
     }
     .contact {
-      padding: 80px 20px 20px;
+      padding: 120px 20px 20px;
     }
     .contact .container {
       max-width: 800px;
-      margin: 0 auto;
+      margin: 0 auto 50px auto;
       background: #fff;
       padding: 40px;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      margin-top: 186px;
     }
     .contact h1 {
       font-size: 36px;
@@ -149,24 +148,13 @@
   <section class="contact">
     <div class="container">
       <h1>Contact Us</h1>
-      <p>If you have any questions or need further information, please feel free to reach out to us through the following contact details:</p>
+      <p>If you have any questions or need further information please feel free to reach out to us through the following contact details:</p>
       <div class="details">
         <div class="item">
           <i class="fas fa-envelope"></i>
-          <a href="mailto:info@example.com">info@example.com</a>
+          <a href="mailto:info@example.com">tneerajvenkatasai@gmail.com</a>
         </div>
-        <div class="item">
-          <i class="fas fa-phone"></i>
-          <a href="tel:+1234567890">+1 234 567 890</a>
-        </div>
-        <div class="item">
-          <i class="fab fa-instagram"></i>
-          <a href="https://instagram.com/yourprofile" target="_blank">Instagram</a>
-        </div>
-        <div class="item">
-          <i class="fab fa-telegram"></i>
-          <a href="https://t.me/yourprofile" target="_blank">Telegram</a>
-        </div>
+        
       </div>
     </div>
   </section>
