@@ -79,11 +79,15 @@
 	</dependency>
 	
 	  
-	  <!-- https://mvnrepository.com/artifact/org.glassfish.web/jakarta.servlet.jsp.jstl -->
+	<dependency>
+	    <groupId>jakarta.servlet.jsp.jstl</groupId>
+	    <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+	    <version>3.0.0</version>
+	</dependency>
 	<dependency>
 	    <groupId>org.glassfish.web</groupId>
-	    <artifactId>jakarta.servlet.jsp.jstl</artifactId><!--$NO-MVN-MAN-VER$-->
-	    <version>3.0.0</version><!--$NO-MVN-MAN-VER$-->
+	    <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+	    <version>3.0.1</version>
 	</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
