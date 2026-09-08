@@ -76,7 +76,9 @@ nav .navbar .menu {
   padding: 20px;
   border-radius: 5px;
   text-align: center;
-  width: 500px; /* Set a width for centering */
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
   margin-top: 60px;
 }
 
@@ -216,6 +218,47 @@ button:hover .arrow {
 
 button:hover .arrow:before {
   right: 0;
+}
+
+@media (max-width: 768px) {
+  body {
+    margin-top: 60px;
+    background-size: cover;
+    background-position: center top;
+    min-height: calc(100vh - 60px);
+    position: relative;
+  }
+  .proverb {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    font-size: 26px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    padding: 25px 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  }
+  footer {
+    margin-top: 50px;
+  }
+  nav .navbar .menu {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  nav .navbar .menu li {
+    margin: 5px;
+  }
+  nav .navbar {
+    flex-direction: column;
+    padding: 10px 0;
+  }
+  nav {
+    height: auto;
+  }
 }
   
   </style>

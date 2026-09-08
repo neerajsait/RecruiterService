@@ -100,6 +100,11 @@
         }
 
         
+    @media screen and (max-width: 768px) {
+        .form-columns {
+            grid-template-columns: 1fr;
+        }
+    }
 </style>
 
         <section class="add-job-posting">

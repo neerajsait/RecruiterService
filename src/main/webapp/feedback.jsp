@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
+  <%@ taglib uri="jakarta.tags.core" prefix="c" %>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feedback</title>
@@ -189,7 +190,29 @@ nav .navbar .menu {
     background-color: #140680;
 }
 
-
+/* Mobile Media Query */
+@media screen and (max-width: 768px) {
+  nav {
+    height: auto;
+    padding: 10px 0;
+  }
+  nav .navbar {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .navbar .menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .navbar .menu li {
+    margin: 5px 10px;
+  }
+  .feedback-container {
+    margin: 140px 20px 50px 20px !important;
+    padding: 20px;
+  }
+}
   </style>
 </head>
 <body>
@@ -207,7 +230,19 @@ nav .navbar .menu {
   <div class="feedback-container">
     <h1>We Value Your Feedback</h1>
     <p>Please share your thoughts and suggestions below.</p>
-    <form action="#" method="POST">
+    
+    <c:if test="${not empty successMessage}">
+        <div style="color: green; text-align: center; margin-bottom: 15px; font-weight: bold;">
+            ${successMessage}
+        </div>
+    </c:if>
+    <c:if test="${not empty errorMessage}">
+        <div style="color: red; text-align: center; margin-bottom: 15px; font-weight: bold;">
+            ${errorMessage}
+        </div>
+    </c:if>
+
+    <form action="submitfeedback" method="POST">
        <input type="hidden" name="_csrf" value="<%= request.getAttribute("csrfToken") %>" />
       <label for="name">Name:</label>
       <input type="text" id="name" name="name" placeholder="Your Name" required>

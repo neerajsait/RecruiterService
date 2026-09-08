@@ -107,3 +107,26 @@ nav .navbar .menu {
     background-color: #140680;
   }
   
+/* Mobile Media Query */
+@media screen and (max-width: 768px) {
+  nav {
+    height: auto;
+    padding: 10px 0;
+  }
+  nav .navbar {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .navbar .menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .navbar .menu li {
+    margin: 5px 10px;
+  }
+  .feedback-container {
+    margin: 140px 20px 50px 20px;
+    padding: 20px;
+  }
+}

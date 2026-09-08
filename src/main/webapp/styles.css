@@ -15,9 +15,12 @@
     display: none;
 }
 
-body {
-    background-color: #f5f5f5;
-    overflow-x: hidden;
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #f4f6f9;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 /* Dashboard Layout Wrapper */
@@ -25,15 +28,19 @@ body {
     display: flex;
     min-height: 100vh;
     width: 100%;
-    background-color: #f5f5f5;
+    background-color: #f4f6f9;
+    position: relative;
+    overflow-x: hidden;
 }
 
 /* Menu Icon (Hamburger) */
 .menu-icon {
     font-size: 24px;
     cursor: pointer;
-    color: #666;
+    color: #1E3264;
     margin-right: 15px;
+    z-index: 1001; /* Ensure above sidebar if needed */
+    position: relative;
 }
 
 /* Sidebar Styles */
@@ -43,12 +50,14 @@ body {
     background-color: #1E3264;
     padding: 20px;
     color: white;
-    transition: margin-left 0.3s ease;
+    transition: margin-left 0.3s ease, left 0.3s ease;
     overflow-y: auto;
+    position: relative;
+    z-index: 1000;
 }
 
 .sidebar.active {
-    margin-left: -250px; /* Closed when toggled */
+    margin-left: -250px; /* Closed when toggled on desktop */
 }
 
 .sidebar-header {
@@ -138,6 +147,8 @@ body {
     flex-direction: column;
     overflow-y: auto;
     padding: 20px;
+    width: 100%;
+    transition: transform 0.3s ease;
 }
 
 /* Top Navbar Styles */
@@ -202,44 +213,45 @@ body {
 /* Dashboard Cards */
 .dashboard-cards {
     display: flex;
-    flex-direction: column; /* Stack cards vertically */
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 15px; /* Reduced gap between cards */
+    gap: 15px;
     margin-top: 20px;
 }
 
 .card {
     background-color: #7f8996;
-    padding: 10px; /* Reduced padding */
-    border-radius: 8px; /* Slightly smaller border radius */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Lighter shadow */
+    padding: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); 
     text-align: center;
     flex: 1;
-    min-width: 150px; /* Reduced minimum width */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+    min-width: 200px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-    transform: translateY(-4px); /* Slight lift effect on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .card h3 {
-    font-size: 14px; /* Reduced font size */
-    margin-bottom: 6px; /* Reduced margin */
-    color: #ffffff; /* Improved text color */
+    font-size: 16px;
+    margin-bottom: 6px;
+    color: #ffffff;
 }
 
 .card p {
-    font-size: 20px; /* Reduced font size */
+    font-size: 24px;
     font-weight: bold;
-    color: #ffffff; /* Improved text color */
+    color: #ffffff;
 }
 
 /* Button Styles */
 .primary-btn, .secondary-btn {
-    padding: 8px 16px; /* Reduced padding */
-    font-size: 14px; /* Reduced font size */
+    padding: 8px 16px;
+    font-size: 14px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
@@ -265,40 +277,7 @@ body {
     background-color: #c1c1c1;
 }
 
-/* Media Queries for Responsiveness */
-@media screen and (max-width: 768px) {
-    .dashboard-layout {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        margin-left: -100%;
-    }
-
-    .sidebar.active {
-        margin-left: 0;
-    }
-
-    .dashboard-cards {
-        flex-direction: column; /* Ensure cards stack vertically on small screens */
-        gap: 10px; /* Reduced gap for small screens */
-    }
-
-    .card {
-        min-width: unset; /* Remove minimum width for smaller screens */
-    }
-}
-
-/* General styles */
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: 'Poppins', sans-serif;
-    background-color: #f4f6f9;
-}
-
+/* Login Page Styles */
 .login-page {
     display: flex;
     justify-content: center;
@@ -316,6 +295,7 @@ body, html {
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
+    margin: 0 20px;
 }
 
 .logo h1 {
@@ -343,201 +323,7 @@ body, html {
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f7f9fc;
-}
-
-.input-group input:focus {
-    border-color: #0112AC;
-    outline: none;
-    background-color: #fff;
-}
-
-.input-group input:hover {
-    border-color: #0b5ed7; /* Added hover effect */
-}
-
-.login-btn {
-    width: 100%;
-    padding: 15px;
-    font-size: 1em;
-    background-color: #0112AC;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-.user-info span {
-    margin-right: 20px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-}
-
-.logout-btn {
-    padding: 8px 16px;
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: background-color 0.3s;
-}
-
-.logout-btn:hover {
-    background-color: #c82333;
-}
-
-/* Page Content */
-.page-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Dashboard Cards */
-.dashboard-cards {
-    display: flex;
-    flex-direction: column; /* Stack cards vertically */
-    justify-content: center;
-    gap: 15px; /* Reduced gap between cards */
-    margin-top: 20px;
-}
-
-.card {
-    background-color: #7f8996;
-    padding: 10px; /* Reduced padding */
-    border-radius: 8px; /* Slightly smaller border radius */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Lighter shadow */
-    text-align: center;
-    flex: 1;
-    min-width: 150px; /* Reduced minimum width */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
-}
-
-.card:hover {
-    transform: translateY(-4px); /* Slight lift effect on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
-}
-
-.card h3 {
-    font-size: 14px; /* Reduced font size */
-    margin-bottom: 6px; /* Reduced margin */
-    color: #ffffff; /* Improved text color */
-}
-
-.card p {
-    font-size: 20px; /* Reduced font size */
-    font-weight: bold;
-    color: #ffffff; /* Improved text color */
-}
-
-/* Button Styles */
-.primary-btn, .secondary-btn {
-    padding: 8px 16px; /* Reduced padding */
-    font-size: 14px; /* Reduced font size */
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.primary-btn {
-    background-color: #ffffff;
-    color: #0112AC;
-    border: 1px solid #0112AC;
-}
-
-.primary-btn:hover {
-    background-color: #e0e0e0;
-}
-
-.secondary-btn {
-    background-color: #f0f0f0;
-    color: #0112AC;
-    border: 1px solid #b0b0b0;
-}
-
-.secondary-btn:hover {
-    background-color: #c1c1c1;
-}
-
-/* Media Queries for Responsiveness */
-@media screen and (max-width: 768px) {
-    .dashboard-layout {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        margin-left: -100%;
-    }
-
-    .sidebar.active {
-        margin-left: 0;
-    }
-
-    .dashboard-cards {
-        flex-direction: column; /* Ensure cards stack vertically on small screens */
-        gap: 10px; /* Reduced gap for small screens */
-    }
-
-    .card {
-        min-width: unset; /* Remove minimum width for smaller screens */
-    }
-}
-
-/* General styles */
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: 'Poppins', sans-serif;
-    background-color: #f4f6f9;
-}
-
-.login-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: #f4f6f9;
-}
-
-.login-box {
-    background-color: white;
-    padding: 40px;
-    width: 400px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.logo h1 {
-    font-size: 2em;
-    color: #0112AC; /* Primary color */
-    margin-bottom: 40px;
-}
-
-.input-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.input-group label {
-    font-weight: 600;
-    font-size: 0.9em;
-    color: #333;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 12px 15px;
-    font-size: 1em;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f7f9fc;
+    box-sizing: border-box;
 }
 
 .input-group input:focus {
@@ -621,7 +407,7 @@ body, html {
 
 .profile-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
 }
 
@@ -665,13 +451,80 @@ body, html {
 }
 
 /* Responsive Tables */
-.table-responsive {
+.table-responsive, .section-body {
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
 
+/* Mobile Media Query for Responsiveness */
 @media screen and (max-width: 768px) {
+    .dashboard-layout {
+        flex-direction: row;
+        overflow-x: hidden;
+    }
+
+    .sidebar {
+        position: absolute;
+        left: -250px;
+        top: 0;
+        bottom: 0;
+        width: 250px;
+        height: 100%;
+        margin-left: 0; /* Reset desktop margin */
+        z-index: 1000;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.active {
+        left: 0;
+        margin-left: 0;
+    }
+
+    .main-content-wrapper {
+        width: 100%;
+        flex-shrink: 0;
+        padding: 10px;
+    }
+
+    .sidebar.active ~ .main-content-wrapper {
+        transform: translateX(250px);
+    }
+
+    .dashboard-cards {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .card {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .top-navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .logo-section h1 {
+        font-size: 20px;
+    }
+
+    .user-info {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .user-info span {
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+    }
+
     .profile-grid {
         grid-template-columns: 1fr;
     }

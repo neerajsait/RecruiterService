@@ -171,6 +171,7 @@
       .filter-container {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 15px;
 }
@@ -229,6 +230,7 @@
     <button id="applyFilter" class="filter-button">Apply Filter</button>
     <button id="resetFilter" class="reset-button">Reset</button>
 </div>
+            <div class="table-responsive">
             <table>
     <thead>
         <tr>
@@ -279,6 +281,7 @@
         </c:forEach>
     </tbody>
 </table>
+</div>
 
         </section>
 

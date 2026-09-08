@@ -13,8 +13,10 @@
             color: #333;
             padding: 15px 0;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
             margin-bottom: 10px;
         }
 
@@ -25,6 +27,7 @@
 
         .header-controls {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             gap: 15px;
         }
@@ -241,6 +244,7 @@
             </div>
         </div>
         <div class="section-body">
+            <div class="table-responsive">
             <table>
                 <thead>
                     <tr>
@@ -362,6 +366,7 @@
                 </c:choose>
                 </tbody>
             </table>
+            </div>
             
         </div>
         </div>

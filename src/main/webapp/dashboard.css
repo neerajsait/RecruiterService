@@ -287,6 +287,30 @@ header h1 {
     .card {
         min-width: unset; /* Remove minimum width for smaller screens */
     }
+    
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding-left: 50px; /* Leave space for the hamburger menu */
+    }
+
+    header h1 {
+        font-size: 20px;
+    }
+
+    .user-info {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .user-info span {
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 220px; /* Truncate long names */
+    }
 }
 
 /* General styles */

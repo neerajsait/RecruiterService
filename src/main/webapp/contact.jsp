@@ -108,6 +108,30 @@
     .contact .details .item a:hover {
       text-decoration: underline;
     }
+
+    /* Mobile Media Query */
+    @media screen and (max-width: 768px) {
+      nav {
+        height: auto;
+        padding: 10px 0;
+      }
+      nav .navbar {
+        flex-direction: column;
+        justify-content: center;
+      }
+      .navbar .menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 10px;
+      }
+      .navbar .menu li {
+        margin: 5px 10px;
+      }
+      .contact .container {
+        margin-top: 140px;
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>

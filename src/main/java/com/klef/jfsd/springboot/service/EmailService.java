@@ -29,4 +29,21 @@ public class EmailService {
         
         mailSender.send(message);
     }
+
+    public void sendFeedbackEmail(String name, String fromEmail, String feedbackMessage) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("ktatwadarsan@gmail.com"); // Should ideally match the authenticated user or be a generic no-reply if not supported
+        message.setTo("2200030957cseh@gmail.com");
+        message.setSubject("New Feedback from " + name);
+        
+        String body = "You have received new feedback from the CareerStream portal:\n\n"
+                    + "Name: " + name + "\n"
+                    + "Email: " + fromEmail + "\n\n"
+                    + "Message:\n"
+                    + feedbackMessage;
+                    
+        message.setText(body);
+        
+        mailSender.send(message);
+    }
 }

@@ -95,6 +95,11 @@
         font-size: 0.8rem;
         margin-top: 4px;
     }
+    @media screen and (max-width: 768px) {
+        .form-columns {
+            grid-template-columns: 1fr;
+        }
+    }
     </style>
         
         <div class="edit-profile-container">
