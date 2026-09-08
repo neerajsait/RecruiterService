@@ -310,7 +310,9 @@ body, html {
 .login-box {
     background-color: white;
     padding: 40px;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -660,4 +662,27 @@ body, html {
 
 .edit-profile-btn:hover {
     background-color: #0112AC;
+}
+
+/* Responsive Tables */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media screen and (max-width: 768px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
 }

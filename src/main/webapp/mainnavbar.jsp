@@ -73,7 +73,9 @@ nav .navbar .menu {
   padding: 20px;
   border-radius: 5px;
   text-align: center;
-  width: 500px; /* Set a width for centering */
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
   margin-top: 60px;
 }
 
@@ -150,6 +152,33 @@ footer .details .item a {
 }
 footer .details .item a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .proverb {
+    position: static;
+    transform: none;
+    margin: 100px auto 20px;
+    width: 90%;
+    font-size: 32px;
+  }
+  footer {
+    margin-top: 50px;
+  }
+  nav .navbar .menu {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  nav .navbar .menu li {
+    margin: 5px;
+  }
+  nav .navbar {
+    flex-direction: column;
+    padding: 10px 0;
+  }
+  nav {
+    height: auto;
+  }
 }
   
   </style>
