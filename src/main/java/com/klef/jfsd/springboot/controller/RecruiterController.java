@@ -584,21 +584,11 @@ public class RecruiterController {
 	}
 
 	
-	@GetMapping("/rget_job_details/{jid}")
-	public ModelAndView getJobDetails(@PathVariable("jid") int jid) {
+	@GetMapping("/rget_job_details")
+	@org.springframework.web.bind.annotation.ResponseBody
+	public com.klef.jfsd.springboot.model.Jobs getJobDetails(@org.springframework.web.bind.annotation.RequestParam("id") int jid) {
 	    logger.info("Fetching details for jobId: {}", jid);
-	    Jobs job = recruiterService.getJobById(jid);
-	    ModelAndView mv = new ModelAndView();
-
-	    if (job != null) {
-	        mv.addObject("job", job);
-	        mv.setViewName("jobDetails");
-	    } else {
-	        mv.addObject("error", "Job not found");
-	        mv.setViewName("errorPage");
-	    }
-
-	    return mv;
+	    return recruiterService.getJobById(jid);
 	}
 
 	
