@@ -272,7 +272,7 @@
                         type="text" 
                         id="ecompany" 
                         name="rcompany" 
-                        placeholder="Enter your location"
+                        placeholder="Enter your Company"
                         required 
                     />
                 </div>
