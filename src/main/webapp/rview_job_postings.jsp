@@ -1,381 +1,398 @@
 <%@ page import="com.klef.jfsd.springboot.model.Recruiter" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<%@ include file="recruiter_header.jsp" %>
-<style nonce="${cspNonce}">
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 1rem;
-            text-align: left;
-        }
+    <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+        <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+            <%@ include file="recruiter_header.jsp" %>
+                <style nonce="${cspNonce}">
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin: 20px 0;
+                        font-size: 1rem;
+                        text-align: left;
+                    }
 
-        table thead {
-            background-color: #f4f4f4;
-            color: #333;
-        }
+                    table thead {
+                        background-color: #f4f4f4;
+                        color: #333;
+                    }
 
-        table thead th {
-            padding: 15px;
-            font-weight: 600;
-            text-transform: uppercase;
-            border-bottom: 2px solid #ddd;
-        }
+                    table thead th {
+                        padding: 15px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        border-bottom: 2px solid #ddd;
+                    }
 
-        table tbody tr {
-            border-bottom: 1px solid #ddd;
-        }
+                    table tbody tr {
+                        border-bottom: 1px solid #ddd;
+                    }
 
-        table tbody tr:hover {
-            background-color: #f1f1f1;
-        }
+                    table tbody tr:hover {
+                        background-color: #f1f1f1;
+                    }
 
-        table tbody td {
-            padding: 12px 15px;
-        }
+                    table tbody td {
+                        padding: 12px 15px;
+                    }
 
-        .actions a {
-            margin-right: 10px;
-            text-decoration: none;
-            color: #0056b3;
-            font-weight: 500;
-        }
+                    .actions a {
+                        margin-right: 10px;
+                        text-decoration: none;
+                        color: #0056b3;
+                        font-weight: 500;
+                    }
 
-        .actions a:hover {
-            color: #00376b;
-        }
+                    .actions a:hover {
+                        color: #00376b;
+                    }
 
-        .job-postings h2 {
-            font-size: 1.5rem;
-            color: #333;
-            margin-bottom: 10px;
-        }
+                    .job-postings h2 {
+                        font-size: 1.5rem;
+                        color: #333;
+                        margin-bottom: 10px;
+                    }
 
-        
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-        }
+                    .modal {
+                        display: none;
+                        position: fixed;
+                        z-index: 1;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        overflow: auto;
+                        background-color: rgb(0, 0, 0);
+                        background-color: rgba(0, 0, 0, 0.4);
+                        padding-top: 60px;
+                    }
 
-        .close {
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            float: right;
-        }
+                    .modal-content {
+                        background-color: #fefefe;
+                        margin: 5% auto;
+                        padding: 20px;
+                        border: 1px solid #888;
+                        width: 80%;
+                        max-width: 600px;
+                    }
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-.alert {
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    background-color: #dcfce7;
-    border: 1px solid #86efac;
-    color: #166534;
-    font-size: 1rem;
-}
+                    .close {
+                        color: #aaa;
+                        font-size: 28px;
+                        font-weight: bold;
+                        float: right;
+                    }
 
-.alert::before {
-    content: '\2713'; 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    background: #86efac;
-    border-radius: 50%;
-    color: #166534;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-.alert.errormsg {
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    background-color: #fee2e2; 
-    border: 1px solid #f87171; 
-    color: #b91c1c; 
-    font-size: 1rem;
-}
+                    .close:hover,
+                    .close:focus {
+                        color: black;
+                        text-decoration: none;
+                        cursor: pointer;
+                    }
 
-.alert.errormsg::before {
-    content: '\2716'; 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    background: #f87171; 
-    border-radius: 50%;
-    color: #b91c1c; 
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-.status-badge {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
+                    .alert {
+                        padding: 1rem 1.5rem;
+                        border-radius: 8px;
+                        margin-bottom: 1.5rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                        background-color: #dcfce7;
+                        border: 1px solid #86efac;
+                        color: #166534;
+                        font-size: 1rem;
+                    }
 
-        .status-pending {
-            background-color: #ffc107;
-            color: #212529;
-        }
-        
-        .status-interview {
-            background-color: #262dc3;
-            color: white;
-        }
+                    .alert::before {
+                        content: '\2713';
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 24px;
+                        height: 24px;
+                        background: #86efac;
+                        border-radius: 50%;
+                        color: #166534;
+                        font-size: 1.2rem;
+                        font-weight: bold;
+                    }
 
-        .status-accepted {
-            background-color: #28a745;
-            color: white;
-        }
+                    .alert.errormsg {
+                        padding: 1rem 1.5rem;
+                        border-radius: 8px;
+                        margin-bottom: 1.5rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                        background-color: #fee2e2;
+                        border: 1px solid #f87171;
+                        color: #b91c1c;
+                        font-size: 1rem;
+                    }
 
-        .status-rejected {
-            background-color: #dc3545;
-            color: white;
-        }
-      .filter-container {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 15px;
-}
+                    .alert.errormsg::before {
+                        content: '\2716';
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 24px;
+                        height: 24px;
+                        background: #f87171;
+                        border-radius: 50%;
+                        color: #b91c1c;
+                        font-size: 1.2rem;
+                        font-weight: bold;
+                    }
 
-.filter-input {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 0.9rem;
-}
+                    .status-badge {
+                        padding: 5px 10px;
+                        border-radius: 20px;
+                        font-size: 0.8rem;
+                        font-weight: 600;
+                    }
 
-.filter-button, .reset-button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s ease;
-}
+                    .status-pending {
+                        background-color: #ffc107;
+                        color: #212529;
+                    }
 
-.filter-button {
-    background-color: #0056b3;
-    color: white;
-}
+                    .status-interview {
+                        background-color: #262dc3;
+                        color: white;
+                    }
 
-.reset-button {
-    background-color: #6c757d;
-    color: white;
-}
+                    .status-accepted {
+                        background-color: #28a745;
+                        color: white;
+                    }
 
-.filter-button:hover {
-    background-color: #004494;
-}
+                    .status-rejected {
+                        background-color: #dc3545;
+                        color: white;
+                    }
 
-.reset-button:hover {
-    background-color: #545b62;
-}
-    </style>
-    </style>
-		<c:if test="${not empty msg}">
-            <div class="alert">
-                <c:out value="${msg}" />
-            </div>
-        </c:if>
-        <section class="job-postings">
-            <h2>Job Postings</h2>
-            
-   <div class="filter-container">
-    <label for="statusFilter">Filter by Status: </label>
-    <select id="statusFilter" class="filter-input">
-        <option value="all">All Statuses</option>
-        <option value="active">Active</option>
-        <option value="inactive">Inactive</option>
-        <option value="blocked">Blocked</option>
-    </select>
-    <button id="applyFilter" class="filter-button">Apply Filter</button>
-    <button id="resetFilter" class="reset-button">Reset</button>
-</div>
-            <div class="table-responsive">
-            <table>
-    <thead>
-        <tr>
-            <th>Job ID</th>
-            <th>Job Title</th>
-            <th>Company</th>
-            <th>Location</th>
-            <th>Actions</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <c:forEach items="${joblist}" var="job">
-            <tr>
-                <td><c:out value="${job.jobsid}" /></td>
-                <td><c:out value="${job.name}" /></td>
-                <td><c:out value="${job.company}" /></td>
-                <td><c:out value="${job.location}" /></td>
-                <td class="actions">
-                <c:if test="${job.status != 'Blocked' }">
-    <a href="redit_job_posting?id=${job.id}" class="text-primary" title="Edit">
-        <i class="fas fa-edit"></i>
-    </a>
-    <a href="javascript:void(0);" 
-       class="text-danger" 
-       title="Delete" 
-       onclick="openDeleteModal('<c:url value="/rdelete_job_posting?id=${job.id}"/>');">
-        <i class="fas fa-trash-alt"></i>
-    </a>
-    </c:if>
-</td>
-								<td>
-								<c:choose>
-        								<c:when test="${job.status =='Active'}">
-								            <span class="status-badge status-accepted">${job.status}</span>
-								        </c:when>
+                    .filter-container {
+                        display: flex;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 10px;
+                        margin-bottom: 15px;
+                    }
 
-								        <c:when test="${job.status == 'Inactive'}">
-								            <span class="status-badge status-pending">${job.status}</span>
-								        </c:when>
-								        <c:otherwise>
-								            <span class="status-badge status-rejected">${job.status}</span>
-								        </c:otherwise>
-								</c:choose>
-								</td>
+                    .filter-input {
+                        padding: 8px;
+                        border: 1px solid #ddd;
+                        border-radius: 4px;
+                        font-size: 0.9rem;
+                    }
 
-            </tr>
-        </c:forEach>
-    </tbody>
-</table>
-</div>
+                    .filter-button,
+                    .reset-button {
+                        padding: 8px 12px;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-size: 0.9rem;
+                        transition: background-color 0.3s ease;
+                    }
 
-        </section>
+                    .filter-button {
+                        background-color: #0056b3;
+                        color: white;
+                    }
 
-    
-    <div id="jobDetailsModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Job Details</h2>
-            <p><strong>Job Title:</strong> <span id="jobTitle"></span></p>
-            <p><strong>Company:</strong> <span id="jobCompany"></span></p>
-            <p><strong>Location:</strong> <span id="jobLocation"></span></p>
-            <p><strong>Employment Type:</strong> <span id="jobEmploymentType"></span></p>
-            <p><strong>Description:</strong> <span id="jobDescription"></span></p>
-        </div>
-    </div>
+                    .reset-button {
+                        background-color: #6c757d;
+                        color: white;
+                    }
 
-    </div>
+                    .filter-button:hover {
+                        background-color: #004494;
+                    }
 
-    <div id="deleteConfirmModal" class="modal">
-        <div class="modal-content" style="max-width: 400px; text-align: center;">
-            <span class="close" onclick="closeDeleteModal()">&times;</span>
-            <h3 style="color: #dc3545; margin-bottom: 15px;">Confirm Deletion</h3>
-            <p style="margin-bottom: 25px; color: #555;">Are you sure you want to delete this job posting? This action cannot be undone.</p>
-            <div style="display: flex; justify-content: center; gap: 15px;">
-                <button onclick="closeDeleteModal()" style="padding: 10px 20px; border: none; background-color: #6c757d; color: white; border-radius: 5px; cursor: pointer; font-size: 16px;">Cancel</button>
-                <a id="confirmDeleteBtn" href="#" style="padding: 10px 20px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px; font-size: 16px;">Yes, Delete</a>
-            </div>
-        </div>
-    </div>
+                    .reset-button:hover {
+                        background-color: #545b62;
+                    }
+                </style>
+                <c:if test="${not empty msg}">
+                    <div class="alert">
+                        <c:out value="${msg}" />
+                    </div>
+                </c:if>
+                <section class="job-postings">
+                    <h2>Job Postings</h2>
 
-    </div>
-<%@ include file="recruiter_footer.jsp" %>
-    <script type="text/javascript">
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        const statusFilter = document.getElementById('statusFilter');
-        const filterButton = document.getElementById('applyFilter');
-        const jobTable = document.querySelector('table tbody');
-        const rows = jobTable.querySelectorAll('tr');
+                    <div class="filter-container">
+                        <label for="statusFilter">Filter by Status: </label>
+                        <select id="statusFilter" class="filter-input">
+                            <option value="all">All Statuses</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="blocked">Blocked</option>
+                        </select>
+                        <button id="applyFilter" class="filter-button">Apply Filter</button>
+                        <button id="resetFilter" class="reset-button">Reset</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Job ID</th>
+                                    <th>Job Title</th>
+                                    <th>Company</th>
+                                    <th>Location</th>
+                                    <th>Actions</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${joblist}" var="job">
+                                    <tr>
+                                        <td>
+                                            <c:out value="${job.jobsid}" />
+                                        </td>
+                                        <td>
+                                            <c:out value="${job.name}" />
+                                        </td>
+                                        <td>
+                                            <c:out value="${job.company}" />
+                                        </td>
+                                        <td>
+                                            <c:out value="${job.location}" />
+                                        </td>
+                                        <td class="actions">
+                                            <c:if test="${job.status != 'Blocked' }">
+                                                <a href="redit_job_posting?id=${job.id}" class="text-primary"
+                                                    title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <c:url var="deleteUrl" value="/rdelete_job_posting?id=${job.id}" />
+                                                <a href="javascript:void(0);" class="text-danger" title="Delete"
+                                                    onclick="openDeleteModal('${deleteUrl}');">
+                                                <i class="fas fa-trash-alt"></i>
+                                                </a>
+                                            </c:if>
+                                        </td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${job.status =='Active'}">
+                                                    <span class="status-badge status-accepted">${job.status}</span>
+                                                </c:when>
 
-        function applyFilter() {
-            const filterValue = statusFilter.value.toLowerCase();
+                                                <c:when test="${job.status == 'Inactive'}">
+                                                    <span class="status-badge status-pending">${job.status}</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="status-badge status-rejected">${job.status}</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
 
-            rows.forEach(row => {
-                const statusCell = row.querySelector('td:last-child .status-badge');
-                const status = statusCell.textContent.toLowerCase();
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
 
-                // Normalize filter values to match exact status text
-                const normalizedFilterValue = filterValue === 'active' ? 'active' :
-                                              filterValue === 'inactive' ? 'inactive' :
-                                              filterValue === 'blocked' ? 'blocked' : 
-                                              'all';
+                </section>
 
-                if (normalizedFilterValue === 'all' || status === normalizedFilterValue) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
 
-        // Add event listener to filter button
-        filterButton.addEventListener('click', applyFilter);
+                <div id="jobDetailsModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                        <h2>Job Details</h2>
+                        <p><strong>Job Title:</strong> <span id="jobTitle"></span></p>
+                        <p><strong>Company:</strong> <span id="jobCompany"></span></p>
+                        <p><strong>Location:</strong> <span id="jobLocation"></span></p>
+                        <p><strong>Employment Type:</strong> <span id="jobEmploymentType"></span></p>
+                        <p><strong>Description:</strong> <span id="jobDescription"></span></p>
+                    </div>
+                </div>
 
-        // Optional: Reset filter functionality
-        const resetButton = document.getElementById('resetFilter');
-        if (resetButton) {
-            resetButton.addEventListener('click', function() {
-                statusFilter.value = 'all';
-                rows.forEach(row => {
-                    row.style.display = '';
-                });
-            });
-        }
-    });
-    
-    function openDeleteModal(url) {
-        document.getElementById('confirmDeleteBtn').href = url;
-        document.getElementById('deleteConfirmModal').style.display = 'block';
-    }
+                <div id="deleteConfirmModal" class="modal">
+                    <div class="modal-content" style="max-width: 400px; text-align: center;">
+                        <span class="close" onclick="closeDeleteModal()">&times;</span>
+                        <h3 style="color: #dc3545; margin-bottom: 15px;">Confirm Deletion</h3>
+                        <p style="margin-bottom: 25px; color: #555;">Are you sure you want to delete this job posting?
+                            This action cannot be undone.</p>
+                        <div style="display: flex; justify-content: center; gap: 15px;">
+                            <button onclick="closeDeleteModal()"
+                                style="padding: 10px 20px; border: none; background-color: #6c757d; color: white; border-radius: 5px; cursor: pointer; font-size: 16px;">Cancel</button>
+                            <a id="confirmDeleteBtn" href="#"
+                                style="padding: 10px 20px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px; font-size: 16px;">Yes,
+                                Delete</a>
+                        </div>
+                    </div>
+                </div>
 
-    function closeDeleteModal() {
-        document.getElementById('deleteConfirmModal').style.display = 'none';
-    }
+                </div>
+                <%@ include file="recruiter_footer.jsp" %>
+                    <script type="text/javascript">
 
-    // Close modal if user clicks outside of it
-    window.onclick = function(event) {
-        let deleteModal = document.getElementById('deleteConfirmModal');
-        let detailsModal = document.getElementById('jobDetailsModal');
-        if (event.target == deleteModal) {
-            deleteModal.style.display = "none";
-        }
-        if (event.target == detailsModal) {
-            detailsModal.style.display = "none";
-        }
-    }
-    </script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const statusFilter = document.getElementById('statusFilter');
+                            const filterButton = document.getElementById('applyFilter');
+                            const jobTable = document.querySelector('table tbody');
+                            const rows = jobTable.querySelectorAll('tr');
+
+                            function applyFilter() {
+                                const filterValue = statusFilter.value.toLowerCase();
+
+                                rows.forEach(row => {
+                                    const statusCell = row.querySelector('td:last-child .status-badge');
+                                    const status = statusCell.textContent.toLowerCase();
+
+                                    // Normalize filter values to match exact status text
+                                    const normalizedFilterValue = filterValue === 'active' ? 'active' :
+                                        filterValue === 'inactive' ? 'inactive' :
+                                            filterValue === 'blocked' ? 'blocked' :
+                                                'all';
+
+                                    if (normalizedFilterValue === 'all' || status === normalizedFilterValue) {
+                                        row.style.display = '';
+                                    } else {
+                                        row.style.display = 'none';
+                                    }
+                                });
+                            }
+
+                            // Add event listener to filter button
+                            filterButton.addEventListener('click', applyFilter);
+
+                            // Optional: Reset filter functionality
+                            const resetButton = document.getElementById('resetFilter');
+                            if (resetButton) {
+                                resetButton.addEventListener('click', function () {
+                                    statusFilter.value = 'all';
+                                    rows.forEach(row => {
+                                        row.style.display = '';
+                                    });
+                                });
+                            }
+                        });
+
+                        function openDeleteModal(url) {
+                            document.getElementById('confirmDeleteBtn').href = url;
+                            document.getElementById('deleteConfirmModal').style.display = 'block';
+                        }
+
+                        function closeDeleteModal() {
+                            document.getElementById('deleteConfirmModal').style.display = 'none';
+                        }
+
+                        function closeModal() {
+                            document.getElementById('jobDetailsModal').style.display = 'none';
+                        }
+
+                        // Close modal if user clicks outside of it
+                        window.onclick = function (event) {
+                            let deleteModal = document.getElementById('deleteConfirmModal');
+                            let detailsModal = document.getElementById('jobDetailsModal');
+                            if (event.target == deleteModal) {
+                                deleteModal.style.display = "none";
+                            }
+                            if (event.target == detailsModal) {
+                                detailsModal.style.display = "none";
+                            }
+                        }
+                    </script>
