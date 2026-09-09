@@ -37,4 +37,13 @@ public class GlobalExceptionHandler {
         ex.printStackTrace();
         return mv;
     }
+
+    // Handle 405 Method Not Allowed exceptions (e.g., GET request to a POST endpoint)
+    @ExceptionHandler(org.springframework.web.HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    public ModelAndView handleMethodNotAllowed(Exception ex) {
+        ModelAndView mv = new ModelAndView("405_error");
+        ex.printStackTrace();
+        return mv;
+    }
 }

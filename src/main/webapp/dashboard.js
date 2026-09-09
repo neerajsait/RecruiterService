@@ -21,7 +21,7 @@ function toggleDropdown(type) {
 
 // Logout function
 function logout() {
-    window.location.href = "rlogin.jsp"; // Redirect to the login page
+    window.location.href = "rlogout"; // Redirect to the logout endpoint
 }
 
 
