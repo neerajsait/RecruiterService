@@ -13,11 +13,12 @@ import jakarta.servlet.http.HttpServletRequest;
 public class CustomErrorController implements ErrorController {
 
     @RequestMapping("/error")
-    public ModelAndView handleError(HttpServletRequest request) {
+    public ModelAndView handleError(HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         
         if (status != null) {
             Integer statusCode = Integer.valueOf(status.toString());
+            response.setStatus(statusCode);
             
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 return new ModelAndView("404_error");
@@ -33,7 +34,8 @@ public class CustomErrorController implements ErrorController {
             }
         }
         
-        // Fallback for any other unexpected error codes
+        // Fallback for any other unexpected error codes or direct access
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
         return new ModelAndView("400_error"); 
     }
 }

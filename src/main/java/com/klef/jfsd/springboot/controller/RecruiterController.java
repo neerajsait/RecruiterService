@@ -450,10 +450,23 @@ public class RecruiterController {
 	    }
 
 	@GetMapping("redit_job_posting")
-	public ModelAndView redit_job_posting(@RequestParam("id")int jid) 
+	public ModelAndView redit_job_posting(@RequestParam("id")int jid, HttpServletRequest request) 
 	{
 		ModelAndView mv = new ModelAndView();
+		HttpSession session = request.getSession();
+		Recruiter r = (Recruiter) session.getAttribute("recruiter");
+		
+		if (r == null) {
+			mv.setViewName("rsessionexpiry");
+			return mv;
+		}
+		
 		Jobs job = recruiterService.getJobById(jid);
+		if (job == null || job.getRecruiterid() != r.getId()) {
+			mv.setViewName("404_error");
+			return mv;
+		}
+		
 		mv.setViewName("redit_job_posting");
 		mv.addObject("job", job);
 		return mv;
@@ -463,7 +476,17 @@ public class RecruiterController {
 	@PostMapping("editjobposting")
 	public ModelAndView editjobposting(@RequestParam("id")int jid,HttpServletRequest request, RedirectAttributes redirectAttributes)
 	{
+		HttpSession session = request.getSession();
+		Recruiter r = (Recruiter) session.getAttribute("recruiter");
+		
+		if (r == null) {
+			return new ModelAndView("rsessionexpiry");
+		}		
 		Jobs j = recruiterService.getJobById(jid);
+		if (j == null || j.getRecruiterid() != r.getId()) {
+			return new ModelAndView("404_error");
+		}
+		
 		String jobid = j.getJobsid();
 		String name = request.getParameter("jname");
 		String company = request.getParameter("jcompany");
@@ -489,9 +512,6 @@ public class RecruiterController {
 			mv.addObject("error", "Maximum Acceptable Applications must be a valid number");
 			return mv;
 		}
-		
-		HttpSession session = request.getSession();
-		Recruiter r = (Recruiter) session.getAttribute("recruiter");
 		
 		Jobs job = new Jobs();
 		job.setId(jid);
@@ -586,9 +606,21 @@ public class RecruiterController {
 	
 	@GetMapping("/rget_job_details")
 	@org.springframework.web.bind.annotation.ResponseBody
-	public com.klef.jfsd.springboot.model.Jobs getJobDetails(@org.springframework.web.bind.annotation.RequestParam("id") int jid) {
+	public com.klef.jfsd.springboot.model.Jobs getJobDetails(@org.springframework.web.bind.annotation.RequestParam("id") int jid, HttpServletRequest request) {
 	    logger.info("Fetching details for jobId: {}", jid);
-	    return recruiterService.getJobById(jid);
+	    HttpSession session = request.getSession();
+	    Recruiter r = (Recruiter) session.getAttribute("recruiter");
+	    
+	    if (r == null) {
+	        return null;
+	    }
+	    
+	    Jobs job = recruiterService.getJobById(jid);
+	    if (job != null && job.getRecruiterid() == r.getId()) {
+	        return job;
+	    }
+	    
+	    return null;
 	}
 
 	
@@ -604,6 +636,13 @@ public class RecruiterController {
 		    return mv;
 		    
 		}
+	  
+	  Jobs j = recruiterService.getJobById(jid);
+	  if (j == null || j.getRecruiterid() != r.getId()) {
+		  mv.setViewName("404_error");
+		  return mv;
+	  }
+	  
       String msg = recruiterService.deletejob(jid);
       
       List<Jobs> joblist = recruiterService.Viewjobsbyrecruiterid(r.getId());
