@@ -1,5 +1,13 @@
 # 🌟 Campus Recruitment Portal (Recruiter Service)
 
+## 🚀 Deployment
+
+The Recruiter Service is deployed on **Oracle Cloud Infrastructure (OCI)** and is accessible through the following URL:
+
+🔗 [Open the deployed Recruiter Portal](https://trees-diego-elections-aquarium.trycloudflare.com/)
+
+> The public URL is exposed through a Cloudflare Tunnel connected to the application running on Oracle Cloud.
+
 > Recruiter service backend application built with Java, Spring Boot, and JSP.
 
 Welcome to the official repository of the **Campus Recruitment Portal – Recruiter Model**.  
