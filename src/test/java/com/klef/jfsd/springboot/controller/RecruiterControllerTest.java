@@ -113,4 +113,40 @@ public class RecruiterControllerTest {
                 .andExpect(view().name("rlogin"))
                 .andExpect(model().attribute("message", "login failed"));
     }
+
+    @Test
+    void testInsertRec_Success() throws Exception {
+        Recruiter rec = new Recruiter();
+        when(validator.validate(any(Recruiter.class))).thenReturn(Collections.emptySet());
+        when(recruiterService.RecruiterRegistration(any(Recruiter.class))).thenReturn("Registration Successful");
+
+        mockMvc.perform(post("/recruiter/insertrec")
+                .param("rname", "Test User")
+                .param("rgender", "Male")
+                .param("rdob", "2000-01-01") // Age > 20
+                .param("rcompany", "Test Inc")
+                .param("rlocation", "Test City")
+                .param("remail", "test@test.com")
+                .param("rpwd", "ValidPassword123")
+                .param("rcontact", "1234567890"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("regpending"))
+                .andExpect(model().attribute("message", "Registration Successful"));
+    }
+
+    @Test
+    void testInsertRec_Under20() throws Exception {
+        mockMvc.perform(post("/recruiter/insertrec")
+                .param("rname", "Test User")
+                .param("rgender", "Male")
+                .param("rdob", java.time.LocalDate.now().minusYears(19).toString()) // Age 19 (Under 20)
+                .param("rcompany", "Test Inc")
+                .param("rlocation", "Test City")
+                .param("remail", "test@test.com")
+                .param("rpwd", "ValidPassword123")
+                .param("rcontact", "1234567890"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("rreg"))
+                .andExpect(model().attribute("errorMessage", "You must be at least 20 years old to register."));
+    }
 }
