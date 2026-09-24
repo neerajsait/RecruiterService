@@ -18,6 +18,7 @@ public interface RecruiterService
 	public Recruiter getrecruiterbyid(int id);
 	public boolean checkEmailExists(String email);
 	public void updatePassword(String email, String newPassword);
+	public Recruiter createOrGetDemoRecruiter();
 	//public String deleterecruiter(int id);
 	public long jobcount();
 	

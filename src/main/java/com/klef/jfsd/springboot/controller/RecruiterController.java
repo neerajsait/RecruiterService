@@ -1111,5 +1111,13 @@ public class RecruiterController {
 			return mv;
 		}
 	}
+	@PostMapping("demo_login")
+	public ModelAndView demoLogin(HttpServletRequest request) {
+		Recruiter demo = recruiterService.createOrGetDemoRecruiter();
+		HttpSession session = request.getSession();
+		session.setAttribute("recruiter", demo);
+		logger.info("Demo Recruiter logged in successfully.");
+		return new ModelAndView("redirect:/recruiter/rhome");
+	}
     
 }

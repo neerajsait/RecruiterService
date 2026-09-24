@@ -114,6 +114,25 @@ public class RecruiterServiceImpl implements RecruiterService
 	}
 
 	@Override
+	public Recruiter createOrGetDemoRecruiter() {
+		Recruiter demo = recruiterRepository.findByEmail("demo@careerstream.com");
+		if (demo == null) {
+			demo = new Recruiter();
+			demo.setName("Demo Recruiter");
+			demo.setEmail("demo@careerstream.com");
+			demo.setPassword(passwordEncoder.encode("Demo@1234"));
+			demo.setCompany("CareerStream Inc.");
+			demo.setLocation("Global");
+			demo.setGender("Other");
+			demo.setContact("9999999999");
+			demo.setStatus("APPROVED");
+			demo.setHasCompletedFirstLogin(true);
+			demo = recruiterRepository.save(demo);
+		}
+		return demo;
+	}
+
+	@Override
 	public void updateFirstLoginStatus(Recruiter recruiter) {
 	    Recruiter r = recruiterRepository.findById(recruiter.getId()).get();
 	    r.setHasCompletedFirstLogin(recruiter.isHasCompletedFirstLogin());

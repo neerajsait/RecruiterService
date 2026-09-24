@@ -235,6 +235,9 @@
                 <button type="submit" class="login-btn">
                     <i class="fas fa-sign-in-alt"></i>Login
                 </button>
+                <button type="submit" class="login-btn" formaction="demo_login" formnovalidate style="background-color: #27ae60; margin-top: 15px; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);">
+                    <i class="fas fa-user-secret"></i> Try Demo Recruiter
+                </button>
                 <div class="additional-links">
                     <a href="/recruiter/forgot_password">Forgot Password?</a> | 
                     <a href="/recruiter/rreg">Register as New Recruiter</a>
