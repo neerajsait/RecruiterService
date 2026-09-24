@@ -467,16 +467,14 @@
         		
         
     </style>
-        <div class="back-button-container">
-    <a href="/recruiter/getapplicants?id=${jobid}&name=${jobname}" class="circular-back-link">
-        <i class="fas fa-arrow-left"></i>
-        Back to Job Applicants
-    </a>
-	</div>
             <section class="job-interviews-section">
         <div class="section-header">
             <h4>${jobname} - Interviews List</h4>
             <div class="header-controls">
+                <a href="/recruiter/getapplicants?id=${jobid}&name=${jobname}" class="btn btn-primary" style="display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Applicants
+                </a>
                 <div class="search-container">
                     <div class="search-icon">🔍</div>
                     <input type="text" class="search-input" placeholder="Search applications...">
@@ -489,7 +487,6 @@
                         <label for="statusFilter" class="filter-label">Status</label>
                         <select id="statusFilter" class="filter-select">
                             <option value="">All</option>
-                            <option value="Interview">Interview</option>
                             <option value="Interview">Interview</option>
                             <option value="APPLIED">Applied</option>
                             <option value="Selected">Selected</option>
@@ -575,10 +572,10 @@
                             <td><span class="status-badge status-interview">Interview</span></td>
                             <td>
                                 <div class="d-flex gap-2">
-                                    <button class="btn btn-interview" title="Accept" onclick="alert('Mock Action: Accept Candidate')">
+                                    <button class="btn btn-interview" title="Accept" onclick="mockAction(this, 'Selected', 'status-accepted')">
                                         <i class="fas fa-check"></i>
                                     </button>
-                                    <button class="btn btn-reject" title="Reject" onclick="alert('Mock Action: Reject Candidate')">
+                                    <button class="btn btn-reject" title="Reject" onclick="mockAction(this, 'Rejected', 'status-rejected')">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
@@ -645,6 +642,20 @@
 
     // Add event listeners
     searchInput.addEventListener('keyup', applySearchAndFilter);
-    applyFiltersBtn.addEventListener('click', applySearchAndFilter);    
+    applyFiltersBtn.addEventListener('click', applySearchAndFilter);
+
+    // Mock Action functionality
+    function mockAction(button, newStatus, badgeClass) {
+        const row = button.closest('tr');
+        const badge = row.querySelector('.status-badge');
+        
+        // Update badge text and class
+        badge.textContent = newStatus;
+        badge.className = 'status-badge ' + badgeClass;
+        
+        // Remove action buttons
+        const actionCell = row.querySelectorAll('td')[4];
+        actionCell.innerHTML = '';
+    }
     </script>
 <%@ include file="recruiter_footer.jsp" %>
