@@ -31,6 +31,7 @@ import com.klef.jfsd.springboot.model.Documents;
 import com.klef.jfsd.springboot.model.Education;
 import com.klef.jfsd.springboot.model.Jobs;
 import com.klef.jfsd.springboot.service.RecruiterService;
+import com.klef.jfsd.springboot.service.EmailService;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
@@ -52,6 +53,9 @@ public class RecruiterController {
 
 	@Autowired
 	private RecruiterService recruiterService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@Autowired 
 	private JavaMailSender mailSender;
