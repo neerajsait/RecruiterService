@@ -287,14 +287,19 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <c:if test="${applicant.status != 'Selected' && applicant.status != 'Rejected' && applicant.status != 'Interview'}">
-                                        <div style="position: relative; display: inline-block;">
-                                            <input type="date" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;" onchange="if(this.value) window.location.href='/recruiter/setstatus/${applicant.id}/Interview'">
-                                            <button class="btn btn-interview">
-                                                <i class="fas fa-calendar-check"></i> 
-                                            </button>
-                                        </div>
-                                    </c:if>
+                                    <c:choose>
+                                        <c:when test="${applicant.status == 'Interview' && not empty applicant.interviewDate}">
+                                            <span style="font-size: 0.85rem; font-weight: bold;">${applicant.interviewDate.replace('T', ' ')}</span>
+                                        </c:when>
+                                        <c:when test="${applicant.status != 'Selected' && applicant.status != 'Rejected' && applicant.status != 'Interview'}">
+                                            <div style="position: relative; display: inline-block;">
+                                                <input type="datetime-local" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;" onchange="if(this.value) window.location.href='/recruiter/setstatus/${applicant.id}/Interview?datetime=' + this.value">
+                                                <button class="btn btn-interview">
+                                                    <i class="fas fa-calendar-check"></i> 
+                                                </button>
+                                            </div>
+                                        </c:when>
+                                    </c:choose>
                                 </td>
                                 <td>
                                     <c:if test="${applicant.status != 'Selected' && applicant.status != 'Rejected' && applicant.status != 'Interview'}">
@@ -324,7 +329,7 @@
                             <td><span class="status-badge status-pending">APPLIED</span></td>
                             <td>
                                 <div style="position: relative; display: inline-block;">
-                                    <input type="date" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;" onchange="if(this.value) mockAction(this, 'Interview', 'status-interview')">
+                                    <input type="datetime-local" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;" onchange="if(this.value) mockAction(this, 'Interview', 'status-interview', this.value)">
                                     <button class="btn btn-interview">
                                         <i class="fas fa-calendar-check"></i> 
                                     </button>
@@ -347,7 +352,7 @@
                                 </button>
                             </td>
                             <td><span class="status-badge status-interview">Interview</span></td>
-                            <td></td>
+                            <td><span style="font-size: 0.85rem; font-weight: bold;">2026-10-15 10:30</span></td>
                             <td>
                                 <div class="actions">
                                     <button class="btn btn-interview" title="Accept" onclick="mockAction(this, 'Shortlisted', 'status-shortlisted')"><i class="fas fa-check"></i></button>
@@ -430,7 +435,7 @@
     searchInput.addEventListener('keyup', applySearchAndFilter);
 
     // Mock Action functionality for demo candidates
-    function mockAction(button, newStatus, badgeClass) {
+    function mockAction(button, newStatus, badgeClass, datetime = null) {
         const row = button.closest('tr');
         const badge = row.querySelector('.status-badge');
         
@@ -441,7 +446,11 @@
         // If moved to Interview, remove interview button and keep actions
         if (newStatus === 'Interview') {
             const interviewCell = row.querySelectorAll('td')[4];
-            interviewCell.innerHTML = '';
+            if (datetime) {
+                interviewCell.innerHTML = '<span style="font-size: 0.85rem; font-weight: bold;">' + datetime.replace('T', ' ') + '</span>';
+            } else {
+                interviewCell.innerHTML = '';
+            }
         } 
         // If moved to Selected/Rejected, remove all action buttons
         else if (newStatus === 'Shortlisted' || newStatus === 'Rejected' || newStatus === 'Selected') {

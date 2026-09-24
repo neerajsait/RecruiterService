@@ -860,10 +860,15 @@ public class RecruiterController {
 	}
 	
 	@GetMapping("setstatus/{id}/{status}")
-	public ModelAndView setjobstatus(@PathVariable("id")int id, @PathVariable("status")String status) throws MessagingException
+	public ModelAndView setjobstatus(@PathVariable("id")int id, @PathVariable("status")String status, @RequestParam(value="datetime", required=false) String datetime) throws MessagingException
 	{
 		String msg = recruiterService.updatestudentjobstatus(status,id);
 		AppliedJobs app = recruiterService.getappliedjobbyid(id);
+		if (datetime != null && !datetime.isEmpty()) {
+		    app.setInterviewDate(datetime);
+		    recruiterService.updateAppliedJob(app);
+		}
+		
 		ModelAndView mv = new ModelAndView();
 		
 		MimeMessage mimeMessage = mailSender.createMimeMessage(); 

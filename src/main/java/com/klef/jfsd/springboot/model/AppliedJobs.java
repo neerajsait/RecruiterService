@@ -61,4 +61,15 @@ public class AppliedJobs
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	@Column(name = "interview_date", length = 50)
+	private String interviewDate;
+
+	public String getInterviewDate() {
+		return interviewDate;
+	}
+
+	public void setInterviewDate(String interviewDate) {
+		this.interviewDate = interviewDate;
+	}
 }

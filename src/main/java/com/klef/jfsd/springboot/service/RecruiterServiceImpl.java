@@ -309,7 +309,13 @@ public class RecruiterServiceImpl implements RecruiterService
 	public long jobscount(int rid, String status) 
 	{
 		return jobsRepository.jobscount(rid, status);
-	} 
+	}
+
+	@Override
+	public void updateAppliedJob(AppliedJobs app) 
+	{
+		appliedJobsRepository.save(app);
+	}
 }
 
 			
