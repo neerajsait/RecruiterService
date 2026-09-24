@@ -137,15 +137,15 @@ public class RecruiterController {
 		rec.setStatus("PENDING");
 		rec.setHasCompletedFirstLogin(false);
 
-		// DOB 18+ Validation
+		// DOB 20+ Validation
 		if (dob != null && !dob.trim().isEmpty()) {
 		    try {
 		        java.time.LocalDate birthDate = java.time.LocalDate.parse(dob);
 		        java.time.LocalDate today = java.time.LocalDate.now();
 		        int age = java.time.Period.between(birthDate, today).getYears();
-		        if (age < 18) {
+		        if (age < 20) {
 		            ModelAndView mv = new ModelAndView("rreg");
-		            mv.addObject("errorMessage", "You must be at least 18 years old to register.");
+		            mv.addObject("errorMessage", "You must be at least 20 years old to register.");
 		            return mv;
 		        }
 		    } catch (Exception e) {
