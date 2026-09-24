@@ -320,14 +320,14 @@
                             </td>
                             <td><span class="status-badge status-pending">APPLIED</span></td>
                             <td>
-                                <button class="btn btn-interview" onclick="alert('Mock Action: Schedule Interview')">
+                                <button class="btn btn-interview" onclick="mockAction(this, 'Interview', 'status-interview')">
                                     <i class="fas fa-calendar-check"></i> 
                                 </button>
                             </td>
                             <td>
                                 <div class="actions">
-                                    <button class="btn btn-interview" title="Accept" onclick="alert('Mock Action: Accept Candidate')"><i class="fas fa-check"></i></button>
-                                    <button class="btn btn-reject" title="Reject" onclick="alert('Mock Action: Reject Candidate')"><i class="fas fa-times"></i></button>
+                                    <button class="btn btn-interview" title="Accept" onclick="mockAction(this, 'Shortlisted', 'status-shortlisted')"><i class="fas fa-check"></i></button>
+                                    <button class="btn btn-reject" title="Reject" onclick="mockAction(this, 'Rejected', 'status-rejected')"><i class="fas fa-times"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -344,8 +344,8 @@
                             <td></td>
                             <td>
                                 <div class="actions">
-                                    <button class="btn btn-interview" title="Accept" onclick="alert('Mock Action: Accept Candidate')"><i class="fas fa-check"></i></button>
-                                    <button class="btn btn-reject" title="Reject" onclick="alert('Mock Action: Reject Candidate')"><i class="fas fa-times"></i></button>
+                                    <button class="btn btn-interview" title="Accept" onclick="mockAction(this, 'Shortlisted', 'status-shortlisted')"><i class="fas fa-check"></i></button>
+                                    <button class="btn btn-reject" title="Reject" onclick="mockAction(this, 'Rejected', 'status-rejected')"><i class="fas fa-times"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -422,5 +422,28 @@
 
     // Add event listeners
     searchInput.addEventListener('keyup', applySearchAndFilter);
+
+    // Mock Action functionality for demo candidates
+    function mockAction(button, newStatus, badgeClass) {
+        const row = button.closest('tr');
+        const badge = row.querySelector('.status-badge');
+        
+        // Update badge text and class
+        badge.textContent = newStatus;
+        badge.className = 'status-badge ' + badgeClass;
+
+        // If moved to Interview, remove interview button and keep actions
+        if (newStatus === 'Interview') {
+            const interviewCell = row.querySelectorAll('td')[4];
+            interviewCell.innerHTML = '';
+        } 
+        // If moved to Selected/Rejected, remove all action buttons
+        else if (newStatus === 'Shortlisted' || newStatus === 'Rejected' || newStatus === 'Selected') {
+            const interviewCell = row.querySelectorAll('td')[4];
+            const actionCell = row.querySelectorAll('td')[5];
+            interviewCell.innerHTML = '';
+            actionCell.innerHTML = '';
+        }
+    }
     </script>
 <%@ include file="recruiter_footer.jsp" %>
