@@ -123,6 +123,7 @@
             %>
             
             <form action="reset_password" method="post">
+                <input type="hidden" name="_csrf" value="<%= request.getAttribute("csrfToken") %>" />
                 <div class="form-group">
                     <label for="newPassword">New Password</label>
                     <input type="password" id="newPassword" name="newPassword" required placeholder="Enter new password (min 8 chars)" minlength="8">

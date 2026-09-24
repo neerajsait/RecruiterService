@@ -151,6 +151,7 @@
             %>
             
             <form action="verify_otp" method="post">
+                <input type="hidden" name="_csrf" value="<%= request.getAttribute("csrfToken") %>" />
                 <div class="form-group">
                     <label for="otp">One-Time Password (OTP)</label>
                     <input type="text" id="otp" name="otp" required placeholder="XXXXXX" maxlength="6">
