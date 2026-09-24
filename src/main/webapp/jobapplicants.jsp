@@ -230,7 +230,7 @@
                     <div class="filter-group">
                         <label for="statusFilter" class="filter-label">Status</label>
                         <select id="statusFilter" class="filter-select">
-                            <option value="">All Statuses</option>
+                            <option value="">All</option>
                             <option value="Interview">Interview</option>
                             <option value="Interview">Interview</option>
                             <option value="APPLIED">Applied</option>

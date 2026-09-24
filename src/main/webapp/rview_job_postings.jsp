@@ -225,7 +225,7 @@
                     <div class="filter-container">
                         <label for="statusFilter">Filter by Status: </label>
                         <select id="statusFilter" class="filter-input">
-                            <option value="all">All Statuses</option>
+                            <option value="all">All</option>
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                             <option value="blocked">Blocked</option>
