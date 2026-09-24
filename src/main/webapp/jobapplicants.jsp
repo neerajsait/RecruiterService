@@ -295,9 +295,12 @@
                                             <span style="font-size: 0.85rem; font-weight: bold;">${applicant.interviewDate.replace('T', ' ')}</span>
                                         </c:when>
                                         <c:when test="${applicant.status != 'Selected' && applicant.status != 'Rejected' && applicant.status != 'Interview'}">
-                                            <button class="btn btn-interview flatpickr-btn" data-id="${applicant.id}" title="Schedule Interview">
-                                                <i class="fas fa-calendar-check"></i> 
-                                            </button>
+                                            <div style="position: relative; display: inline-block;">
+                                                <input type="text" class="flatpickr-input" data-id="${applicant.id}" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;">
+                                                <button class="btn btn-interview" title="Schedule Interview">
+                                                    <i class="fas fa-calendar-check"></i> 
+                                                </button>
+                                            </div>
                                         </c:when>
                                     </c:choose>
                                 </td>
@@ -328,9 +331,12 @@
                             </td>
                             <td><span class="status-badge status-pending">APPLIED</span></td>
                             <td>
-                                <button class="btn btn-interview flatpickr-btn" data-mock="true" title="Schedule Interview">
-                                    <i class="fas fa-calendar-check"></i> 
-                                </button>
+                                <div style="position: relative; display: inline-block;">
+                                    <input type="text" class="flatpickr-input" data-mock="true" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;">
+                                    <button class="btn btn-interview" title="Schedule Interview">
+                                        <i class="fas fa-calendar-check"></i> 
+                                    </button>
+                                </div>
                             </td>
                             <td>
                                 <div class="actions">
@@ -460,16 +466,16 @@
         }
     }
     // Flatpickr initialization
-    flatpickr(".flatpickr-btn", {
+    flatpickr(".flatpickr-input", {
         enableTime: true,
         dateFormat: "Y-m-d\\TH:i",
         minDate: "today",
         onChange: function(selectedDates, dateStr, instance) {
-            const btn = instance.element;
-            if (btn.getAttribute('data-mock') === 'true') {
-                mockAction(btn, 'Interview', 'status-interview', dateStr);
+            const input = instance.element;
+            if (input.getAttribute('data-mock') === 'true') {
+                mockAction(input, 'Interview', 'status-interview', dateStr);
             } else {
-                const applicantId = btn.getAttribute('data-id');
+                const applicantId = input.getAttribute('data-id');
                 window.location.href = '/recruiter/setstatus/' + applicantId + '/Interview?datetime=' + dateStr;
             }
         }
