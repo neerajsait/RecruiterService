@@ -5,7 +5,6 @@
 <%@ include file="recruiter_header.jsp" %>
 <!-- Flatpickr CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
 <style nonce="${cspNonce}">
         
         .job-applicants-section {
@@ -295,9 +294,9 @@
                                             <span style="font-size: 0.85rem; font-weight: bold;">${applicant.interviewDate.replace('T', ' ')}</span>
                                         </c:when>
                                         <c:when test="${applicant.status != 'Selected' && applicant.status != 'Rejected' && applicant.status != 'Interview'}">
-                                            <div style="position: relative; display: inline-block;">
-                                                <input type="text" class="flatpickr-input" data-id="${applicant.id}" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;">
-                                                <button class="btn btn-interview" title="Schedule Interview">
+                                            <div class="flatpickr-wrap" data-id="${applicant.id}" style="display: inline-block;">
+                                                <input type="text" data-input style="display: none;">
+                                                <button type="button" class="btn btn-interview" data-toggle title="Schedule Interview">
                                                     <i class="fas fa-calendar-check"></i> 
                                                 </button>
                                             </div>
@@ -331,9 +330,9 @@
                             </td>
                             <td><span class="status-badge status-pending">APPLIED</span></td>
                             <td>
-                                <div style="position: relative; display: inline-block;">
-                                    <input type="text" class="flatpickr-input" data-mock="true" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;">
-                                    <button class="btn btn-interview" title="Schedule Interview">
+                                <div class="flatpickr-wrap" data-mock="true" style="display: inline-block;">
+                                    <input type="text" data-input style="display: none;">
+                                    <button type="button" class="btn btn-interview" data-toggle title="Schedule Interview">
                                         <i class="fas fa-calendar-check"></i> 
                                     </button>
                                 </div>
@@ -466,16 +465,18 @@
         }
     }
     // Flatpickr initialization
-    flatpickr(".flatpickr-input", {
+    flatpickr(".flatpickr-wrap", {
+        wrap: true,
         enableTime: true,
         dateFormat: "Y-m-d\\TH:i",
         minDate: "today",
         onChange: function(selectedDates, dateStr, instance) {
-            const input = instance.element;
-            if (input.getAttribute('data-mock') === 'true') {
-                mockAction(input, 'Interview', 'status-interview', dateStr);
+            const wrapEl = instance.element;
+            if (wrapEl.getAttribute('data-mock') === 'true') {
+                const btn = wrapEl.querySelector('button');
+                mockAction(btn, 'Interview', 'status-interview', dateStr);
             } else {
-                const applicantId = input.getAttribute('data-id');
+                const applicantId = wrapEl.getAttribute('data-id');
                 window.location.href = '/recruiter/setstatus/' + applicantId + '/Interview?datetime=' + dateStr;
             }
         }
