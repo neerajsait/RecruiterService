@@ -207,9 +207,18 @@
         <div class="login-form">
             <h1><i class="fas fa-user-tie"></i>Recruiter Login</h1>
             <c:if test="${not empty message}">
-                <div class="error-msg">
-                    <i class="fas fa-exclamation-triangle"></i> Incorrect Email or Password.
-                </div>
+                <c:choose>
+                    <c:when test="${message.contains('successful')}">
+                        <div class="success-msg" style="background-color: #e8f5e9; color: #2e7d32; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 600; border: 1px solid #c8e6c9;">
+                            <i class="fas fa-check-circle"></i> ${message}
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="error-msg">
+                            <i class="fas fa-exclamation-triangle"></i> ${message}
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </c:if>
             <form action="checkreclogin" method="post">
                 <input type="hidden" name="_csrf" value="<%= request.getAttribute("csrfToken") %>" />
@@ -227,7 +236,7 @@
                     <i class="fas fa-sign-in-alt"></i>Login
                 </button>
                 <div class="additional-links">
-                    
+                    <a href="/recruiter/forgot_password">Forgot Password?</a> | 
                     <a href="/recruiter/rreg">Register as New Recruiter</a>
                 </div>
             </form>

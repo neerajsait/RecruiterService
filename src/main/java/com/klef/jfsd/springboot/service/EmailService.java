@@ -41,9 +41,24 @@ public class EmailService {
                     + "Email: " + fromEmail + "\n\n"
                     + "Message:\n"
                     + feedbackMessage;
+        
+        message.setText(body);
+        mailSender.send(message);
+    }
+
+    public void sendOTPEmail(String toEmail, String otp) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("ktatwadarsan@gmail.com");
+        message.setTo(toEmail);
+        message.setSubject("Password Reset OTP - CareerStream");
+        
+        String body = "You have requested a password reset for your CareerStream Recruiter account.\n\n"
+                    + "Your One-Time Password (OTP) is: " + otp + "\n\n"
+                    + "If you did not request this, please ignore this email.\n\n"
+                    + "Best Regards,\n"
+                    + "CareerStream Admin Team";
                     
         message.setText(body);
-        
         mailSender.send(message);
     }
 }

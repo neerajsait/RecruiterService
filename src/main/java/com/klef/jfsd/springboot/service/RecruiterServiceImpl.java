@@ -100,6 +100,20 @@ public class RecruiterServiceImpl implements RecruiterService
 
 	
 	@Override
+	public boolean checkEmailExists(String email) {
+		return recruiterRepository.findByEmail(email) != null;
+	}
+
+	@Override
+	public void updatePassword(String email, String newPassword) {
+		Recruiter r = recruiterRepository.findByEmail(email);
+		if (r != null) {
+			r.setPassword(passwordEncoder.encode(newPassword));
+			recruiterRepository.save(r);
+		}
+	}
+
+	@Override
 	public void updateFirstLoginStatus(Recruiter recruiter) {
 	    Recruiter r = recruiterRepository.findById(recruiter.getId()).get();
 	    r.setHasCompletedFirstLogin(recruiter.isHasCompletedFirstLogin());

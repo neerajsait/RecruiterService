@@ -1052,6 +1052,60 @@ public class RecruiterController {
 	    }
 	
 	
+	@GetMapping("forgot_password")
+	public ModelAndView forgotPassword() {
+		return new ModelAndView("forgot_password");
+	}
+
+	@PostMapping("send_otp")
+	public ModelAndView sendOtp(HttpServletRequest request) {
+		String email = request.getParameter("email");
+		if (recruiterService.checkEmailExists(email)) {
+			String otp = String.format("%06d", new java.util.Random().nextInt(999999));
+			request.getSession().setAttribute("reset_email", email);
+			request.getSession().setAttribute("reset_otp", otp);
+			emailService.sendOTPEmail(email, otp);
+			ModelAndView mv = new ModelAndView("verify_otp");
+			mv.addObject("message", "OTP sent to your email.");
+			return mv;
+		} else {
+			ModelAndView mv = new ModelAndView("forgot_password");
+			mv.addObject("error", "Email not found!");
+			return mv;
+		}
+	}
+
+	@PostMapping("verify_otp")
+	public ModelAndView verifyOtp(HttpServletRequest request) {
+		String enteredOtp = request.getParameter("otp");
+		String sessionOtp = (String) request.getSession().getAttribute("reset_otp");
+
+		if (sessionOtp != null && sessionOtp.equals(enteredOtp)) {
+			return new ModelAndView("reset_password");
+		} else {
+			ModelAndView mv = new ModelAndView("verify_otp");
+			mv.addObject("error", "Invalid OTP. Please try again.");
+			return mv;
+		}
+	}
+
+	@PostMapping("reset_password")
+	public ModelAndView resetPassword(HttpServletRequest request) {
+		String newPassword = request.getParameter("newPassword");
+		String email = (String) request.getSession().getAttribute("reset_email");
+
+		if (email != null && newPassword != null && newPassword.length() >= 8) {
+			recruiterService.updatePassword(email, newPassword);
+			request.getSession().removeAttribute("reset_email");
+			request.getSession().removeAttribute("reset_otp");
+			ModelAndView mv = new ModelAndView("rlogin");
+			mv.addObject("message", "Password reset successful! Please login with your new password.");
+			return mv;
+		} else {
+			ModelAndView mv = new ModelAndView("reset_password");
+			mv.addObject("error", "Invalid password. Must be at least 8 characters.");
+			return mv;
+		}
+	}
     
-	
 }
