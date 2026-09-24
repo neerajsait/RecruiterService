@@ -3,8 +3,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ include file="recruiter_header.jsp" %>
-<!-- Flatpickr CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style nonce="${cspNonce}">
         
         .job-applicants-section {
@@ -214,6 +212,105 @@
             display: flex;
             gap: 5px;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: modalFadeIn 0.3s ease;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .modal-header h3 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+        .close-modal {
+            color: #999;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close-modal:hover {
+            color: #333;
+        }
+        .modal-body label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #444;
+        }
+        .modal-body input[type="datetime-local"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-family: inherit;
+            font-size: 1rem;
+            color: #333;
+            transition: border-color 0.3s;
+        }
+        .modal-body input[type="datetime-local"]:focus {
+            outline: none;
+            border-color: #0d6efd;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .modal-btn-cancel {
+            background-color: #f1f3f5;
+            color: #495057;
+        }
+        .modal-btn-cancel:hover {
+            background-color: #e2e6ea;
+        }
+        .modal-btn-confirm {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .modal-btn-confirm:hover {
+            background-color: #0b5ed7;
+        }
     </style>
     </style>
             <section class="job-applicants-section">
@@ -294,7 +391,7 @@
                                             <span style="font-size: 0.85rem; font-weight: bold;">${applicant.interviewDate.replace('T', ' ')}</span>
                                         </c:when>
                                         <c:when test="${applicant.status != 'Selected' && applicant.status != 'Rejected' && applicant.status != 'Interview'}">
-                                            <button class="btn btn-interview flatpickr-btn" data-id="${applicant.id}" title="Schedule Interview">
+                                            <button class="btn btn-interview" onclick="openScheduleModal('${applicant.id}')" title="Schedule Interview">
                                                 <i class="fas fa-calendar-check"></i> 
                                             </button>
                                         </c:when>
@@ -327,7 +424,7 @@
                             </td>
                             <td><span class="status-badge status-pending">APPLIED</span></td>
                             <td>
-                                <button class="btn btn-interview flatpickr-btn" data-mock="true" title="Schedule Interview">
+                                <button class="btn btn-interview" onclick="openScheduleModal(null, this)" title="Schedule Interview">
                                     <i class="fas fa-calendar-check"></i> 
                                 </button>
                             </td>
@@ -378,8 +475,25 @@
         </div>
         </div>
     </div>
-    <!-- Flatpickr JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Schedule Interview Modal -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Schedule Interview</h3>
+                <span class="close-modal" onclick="closeScheduleModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <label for="interviewDateTime">Select Date and Time:</label>
+                <input type="datetime-local" id="interviewDateTime">
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeScheduleModal()">Cancel</button>
+                <button class="modal-btn modal-btn-confirm" onclick="confirmSchedule()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
     <script nonce="${cspNonce}">
  // Dropdown functionality
     const filterButton = document.querySelector('.filter-button');
@@ -458,20 +572,52 @@
             actionCell.innerHTML = '';
         }
     }
-    // Flatpickr initialization
-    flatpickr(".flatpickr-btn", {
-        enableTime: true,
-        dateFormat: "Y-m-d\\TH:i",
-        minDate: "today",
-        onChange: function(selectedDates, dateStr, instance) {
-            const btn = instance.element;
-            if (btn.getAttribute('data-mock') === 'true') {
-                mockAction(btn, 'Interview', 'status-interview', dateStr);
-            } else {
-                const applicantId = btn.getAttribute('data-id');
-                window.location.href = '/recruiter/setstatus/' + applicantId + '/Interview?datetime=' + dateStr;
-            }
+
+    // Modal functionality for Date/Time selection
+    let currentApplicantId = null;
+    let isMock = false;
+    let currentMockRow = null;
+
+    function openScheduleModal(applicantId, mockBtn = null) {
+        currentApplicantId = applicantId;
+        if (mockBtn) {
+            isMock = true;
+            currentMockRow = mockBtn;
+        } else {
+            isMock = false;
         }
-    });
+        document.getElementById('interviewDateTime').value = '';
+        document.getElementById('scheduleModal').style.display = 'block';
+    }
+
+    function closeScheduleModal() {
+        document.getElementById('scheduleModal').style.display = 'none';
+        currentApplicantId = null;
+        isMock = false;
+        currentMockRow = null;
+    }
+
+    function confirmSchedule() {
+        const datetime = document.getElementById('interviewDateTime').value;
+        if (!datetime) {
+            alert('Please select a valid date and time.');
+            return;
+        }
+        
+        if (isMock) {
+            mockAction(currentMockRow, 'Interview', 'status-interview', datetime);
+            closeScheduleModal();
+        } else {
+            window.location.href = '/recruiter/setstatus/' + currentApplicantId + '/Interview?datetime=' + datetime;
+        }
+    }
+
+    // Close modal if clicked outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('scheduleModal');
+        if (event.target == modal) {
+            closeScheduleModal();
+        }
+    }
     </script>
 <%@ include file="recruiter_footer.jsp" %>
