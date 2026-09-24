@@ -131,6 +131,7 @@ public class RecruiterServiceImpl implements RecruiterService
 			demo.setCompany("CareerStream Inc.");
 			demo.setLocation("Global");
 			demo.setGender("Other");
+			demo.setDateofbirth("2000-01-01");
 			demo.setContact("9999999999");
 			demo.setStatus("APPROVED");
 			demo.setHasCompletedFirstLogin(true);
