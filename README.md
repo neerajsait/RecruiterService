@@ -18,6 +18,10 @@ This project provides an intuitive interface and robust backend for recruiters t
 - **Dynamic Task Management**: Allows recruiters to add and mark personal recruitment tasks as completed.
 - **Job Posting Management**: Post new openings, edit requirements, and manage maximum allowed applications.
 - **Security & Compliance**: Implemented robust CSRF protection and strict Content Security Policies (CSP) with dynamic nonces.
+- **Secure Password Recovery**: Implemented a "Forgot Password" system with secure, 6-digit OTPs sent directly to the recruiter's email.
+- **Automated Testing**: Comprehensive unit and integration test suite (13+ tests) using JUnit 5, Mockito, and MockMvc to ensure backend stability.
+- **Application Monitoring**: Integrated Spring Boot Actuator to expose `/actuator/health` and `/actuator/metrics` for production-grade telemetry.
+- **Continuous Integration (CI)**: Integrated GitHub Actions to automatically run Maven builds and execute the test suite on every code push or pull request.
 
 ---
 
