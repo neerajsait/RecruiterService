@@ -3,6 +3,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ include file="recruiter_header.jsp" %>
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
 <style nonce="${cspNonce}">
         
         .job-applicants-section {
@@ -292,12 +295,9 @@
                                             <span style="font-size: 0.85rem; font-weight: bold;">${applicant.interviewDate.replace('T', ' ')}</span>
                                         </c:when>
                                         <c:when test="${applicant.status != 'Selected' && applicant.status != 'Rejected' && applicant.status != 'Interview'}">
-                                            <div style="position: relative; display: inline-block;">
-                                                <input type="datetime-local" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;" onchange="if(this.value) window.location.href='/recruiter/setstatus/${applicant.id}/Interview?datetime=' + this.value">
-                                                <button class="btn btn-interview">
-                                                    <i class="fas fa-calendar-check"></i> 
-                                                </button>
-                                            </div>
+                                            <button class="btn btn-interview flatpickr-btn" data-id="${applicant.id}" title="Schedule Interview">
+                                                <i class="fas fa-calendar-check"></i> 
+                                            </button>
                                         </c:when>
                                     </c:choose>
                                 </td>
@@ -328,12 +328,9 @@
                             </td>
                             <td><span class="status-badge status-pending">APPLIED</span></td>
                             <td>
-                                <div style="position: relative; display: inline-block;">
-                                    <input type="datetime-local" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;" onchange="if(this.value) mockAction(this, 'Interview', 'status-interview', this.value)">
-                                    <button class="btn btn-interview">
-                                        <i class="fas fa-calendar-check"></i> 
-                                    </button>
-                                </div>
+                                <button class="btn btn-interview flatpickr-btn" data-mock="true" title="Schedule Interview">
+                                    <i class="fas fa-calendar-check"></i> 
+                                </button>
                             </td>
                             <td>
                                 <div class="actions">
@@ -382,6 +379,8 @@
         </div>
         </div>
     </div>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script nonce="${cspNonce}">
  // Dropdown functionality
     const filterButton = document.querySelector('.filter-button');
@@ -460,5 +459,20 @@
             actionCell.innerHTML = '';
         }
     }
+    // Flatpickr initialization
+    flatpickr(".flatpickr-btn", {
+        enableTime: true,
+        dateFormat: "Y-m-d\\TH:i",
+        minDate: "today",
+        onChange: function(selectedDates, dateStr, instance) {
+            const btn = instance.element;
+            if (btn.getAttribute('data-mock') === 'true') {
+                mockAction(btn, 'Interview', 'status-interview', dateStr);
+            } else {
+                const applicantId = btn.getAttribute('data-id');
+                window.location.href = '/recruiter/setstatus/' + applicantId + '/Interview?datetime=' + dateStr;
+            }
+        }
+    });
     </script>
 <%@ include file="recruiter_footer.jsp" %>
