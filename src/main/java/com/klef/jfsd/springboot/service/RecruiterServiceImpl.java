@@ -22,11 +22,18 @@ import com.klef.jfsd.springboot.repository.RecruiterRepository;
 import com.klef.jfsd.springboot.repository.StudentRepository;
 import com.klef.jfsd.springboot.repository.TasksRepository;
 
+import jakarta.annotation.PostConstruct;
+
 @Service
 public class RecruiterServiceImpl implements RecruiterService 
 {
 	@Autowired
 	private RecruiterRepository recruiterRepository;
+	
+	@PostConstruct
+	public void initDemoRecruiter() {
+		createOrGetDemoRecruiter();
+	}
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;

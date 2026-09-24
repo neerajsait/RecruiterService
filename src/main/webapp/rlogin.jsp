@@ -235,7 +235,7 @@
                 <button type="submit" class="login-btn">
                     <i class="fas fa-sign-in-alt"></i>Login
                 </button>
-                <button type="submit" class="login-btn" formaction="demo_login" formnovalidate style="background-color: #27ae60; margin-top: 15px; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);">
+                <button type="button" class="login-btn" onclick="fillDemoCredentials()" style="background-color: #27ae60; margin-top: 15px; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);">
                     <i class="fas fa-user-secret"></i> Try Demo Recruiter
                 </button>
                 <div class="additional-links">
@@ -245,6 +245,12 @@
             </form>
         </div>
     </div>
+    <script>
+        function fillDemoCredentials() {
+            document.getElementById('email').value = 'demo@careerstream.com';
+            document.getElementById('password').value = 'Demo@1234';
+        }
+    </script>
 </body>
 </html>
         
