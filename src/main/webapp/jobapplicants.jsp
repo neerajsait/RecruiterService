@@ -288,9 +288,12 @@
                                 </td>
                                 <td>
                                     <c:if test="${applicant.status != 'Selected' && applicant.status != 'Rejected' && applicant.status != 'Interview'}">
-                                        <button class="btn btn-interview" onclick="window.location.href='/recruiter/setstatus/${applicant.id}/Interview'">
-                                            <i class="fas fa-calendar-check"></i> 
-                                        </button>
+                                        <div style="position: relative; display: inline-block;">
+                                            <input type="date" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;" onchange="if(this.value) window.location.href='/recruiter/setstatus/${applicant.id}/Interview'">
+                                            <button class="btn btn-interview">
+                                                <i class="fas fa-calendar-check"></i> 
+                                            </button>
+                                        </div>
                                     </c:if>
                                 </td>
                                 <td>
@@ -320,9 +323,12 @@
                             </td>
                             <td><span class="status-badge status-pending">APPLIED</span></td>
                             <td>
-                                <button class="btn btn-interview" onclick="mockAction(this, 'Interview', 'status-interview')">
-                                    <i class="fas fa-calendar-check"></i> 
-                                </button>
+                                <div style="position: relative; display: inline-block;">
+                                    <input type="date" style="position: absolute; opacity: 0; width: 100%; height: 100%; top: 0; left: 0; cursor: pointer;" onchange="if(this.value) mockAction(this, 'Interview', 'status-interview')">
+                                    <button class="btn btn-interview">
+                                        <i class="fas fa-calendar-check"></i> 
+                                    </button>
+                                </div>
                             </td>
                             <td>
                                 <div class="actions">
