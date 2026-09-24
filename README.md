@@ -8,7 +8,7 @@ The Recruiter Service is deployed on **Oracle Cloud Infrastructure (OCI)** and i
 
 > The public URL is exposed through a Cloudflare Tunnel connected to the application running on Oracle Cloud.
 
-> Recruiter service backend application built with Java, Spring Boot, and JSP.
+> :RecruiterService — the recruiter module of the Campus Recruitment Portal (CareerStream).
 
 Welcome to the official repository of the **Campus Recruitment Portal – Recruiter Model**.  
 This project provides an intuitive interface and robust backend for recruiters to manage job postings, view applications, schedule interviews, track dynamic tasks, and analyze recruitment data. It is part of a full-fledged placement management system designed to streamline campus hiring.
