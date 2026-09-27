@@ -20,12 +20,11 @@
 }
 body {
   background-image: url('../images/HomePage.jpg');
-  background-size: 100% auto;
-  background-attachment: fixed;
+  background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
-  background-color: transparent;
-  
+  background-color: #f4f6f9;
+  min-height: 100vh;
 }
 nav {
   position: fixed;
@@ -121,12 +120,7 @@ nav .navbar .menu {
   }
   
     body {
-    background-image: url('./images/HomePage.jpg');
     margin: 0;
-    background-size: 100% auto; /* Adjusts the width to 100% of the screen, height auto */
-    background-attachment: fixed;
-    background-position: center top; /* Keeps the image centered at the top */
-    background-repeat: no-repeat; /* Prevents repeating of the image */
     padding-top: 120px;
 }
 .feedback-container {

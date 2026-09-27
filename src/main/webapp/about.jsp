@@ -19,12 +19,11 @@
 }
 body {
   background-image: url('../images/HomePage.jpg');
-  background-size: 100% auto;
-  background-attachment: fixed;
+  background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
-  background-color: transparent;
-  backdrop-filter: blur(8px);
+  background-color: #f4f6f9;
+  min-height: 100vh;
 }
 nav {
   position: fixed;
@@ -80,7 +79,7 @@ nav .navbar .menu {
 }
 .about .container {
   max-width: 800px;
-  margin: 0 auto 20px auto;
+  margin: 100px auto 20px auto;
   background: #fff;
   padding: 40px;
   border-radius: 10px;
