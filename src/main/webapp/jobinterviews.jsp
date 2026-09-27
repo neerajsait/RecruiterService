@@ -465,7 +465,15 @@
     background-color: #0b5ed7;
 }
         		
-        
+.profile-link {
+    color: #0056b3;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+.profile-link:hover {
+    color: #00376b;
+}        
     </style>
             <section class="job-interviews-section">
         <div class="section-header">
@@ -479,22 +487,15 @@
                     <div class="search-icon">🔍</div>
                     <input type="text" class="search-input" placeholder="Search applications...">
                 </div>
-                <button class="filter-button">
-                    ☰ Filter
-                </button>
-                <div class="filter-dropdown">
-                    <div class="filter-group">
-                        <label for="statusFilter" class="filter-label">Status</label>
-                        <select id="statusFilter" class="filter-select">
-                            <option value="">All</option>
-                            <option value="Interview">Interview</option>
-                            <option value="APPLIED">Applied</option>
-                            <option value="Selected">Selected</option>
-                            <option value="Rejected">Rejected</option>
-                            
-                        </select>
-                    </div>
-                    <button class="apply-filter-btn">Apply Filters</button>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label for="statusFilter" style="font-weight: 600; color: #333;">Status:</label>
+                    <select id="statusFilter" class="filter-select" style="width: auto; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <option value="">All</option>
+                        <option value="Interview">Interview</option>
+                        <option value="APPLIED">Applied</option>
+                        <option value="Selected">Selected</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -520,9 +521,9 @@
                                     <td>${applicant.student.name}</td>
                                     <td>${applicant.student.id}</td>
                                     <td>
-                                        <button class="btn btn-profile" onclick="window.open('/recruiter/getstudentdetails?id=${applicant.student.id}', '_blank')">
-                                            <i class="fas fa-eye"></i> View Profile
-                                        </button>
+                                        <a href="/recruiter/getstudentdetails?id=${applicant.student.id}" target="_blank" class="profile-link" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
                                     </td>
                                     <td>
                                         <c:choose>
@@ -565,9 +566,9 @@
                             <td>Jane Smith (Mock)</td>
                             <td>31002</td>
                             <td>
-                                <button class="btn btn-profile" onclick="window.open('/recruiter/getstudentdetails?id=31002', '_blank')">
-                                    <i class="fas fa-eye"></i> View Profile
-                                </button>
+                                <a href="/recruiter/getstudentdetails?id=31002" target="_blank" class="profile-link" title="View Profile">
+                                    <i class="fas fa-eye"></i>
+                                </a>
                             </td>
                             <td><span class="status-badge status-interview">Interview</span></td>
                             <td>
@@ -592,32 +593,10 @@
     
     </div>
     <script nonce="${cspNonce}">
- // Dropdown functionality
-    const filterButton = document.querySelector('.filter-button');
-    const filterDropdown = document.querySelector('.filter-dropdown');
-
-    filterButton.addEventListener('click', function(event) {
-        // Stop propagation to prevent immediate closure
-        event.stopPropagation();
-        filterDropdown.classList.toggle('show');
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(event) {
-        if (!filterDropdown.contains(event.target) && !filterButton.contains(event.target)) {
-            filterDropdown.classList.remove('show');
-        }
-    });
-
-    // Prevent dropdown from closing when interacting inside it
-    filterDropdown.addEventListener('click', function(event) {
-        event.stopPropagation();
-    });
 
     // Search and filter functionality
     const searchInput = document.querySelector('.search-input');
     const statusFilter = document.getElementById('statusFilter');
-    const applyFiltersBtn = document.querySelector('.apply-filter-btn');
     const table = document.querySelector('.table');
     const rows = table.querySelectorAll('tbody tr');
 
@@ -636,13 +615,12 @@
             row.style.display = (matchesSearch && matchesStatus) ? '' : 'none';
         });
 
-        // Close dropdown after applying filters
-        filterDropdown.classList.remove('show');
+
     }
 
     // Add event listeners
     searchInput.addEventListener('keyup', applySearchAndFilter);
-    applyFiltersBtn.addEventListener('click', applySearchAndFilter);
+    statusFilter.addEventListener('change', applySearchAndFilter);
 
     // Mock Action functionality
     function mockAction(button, newStatus, badgeClass) {
