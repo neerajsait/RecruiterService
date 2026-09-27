@@ -27,7 +27,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/recruiter/rblocked",
                         "/recruiter/css/**",
                         "/recruiter/js/**",
-                        "/recruiter/images/**"
+                        "/recruiter/images/**",
+                        "/recruiter/forgot_password",
+                        "/recruiter/send_otp",
+                        "/recruiter/verify_otp",
+                        "/recruiter/reset_password"
                 );
     }
 }
