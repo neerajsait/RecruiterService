@@ -67,7 +67,7 @@ Recruiter r = recruiterLayout;
                     <div class="menu-icon">
                         <i class="fas fa-bars" onclick="toggleSidebar()"></i>
                     </div>
-                    <h1>CareerStream</h1>
+                    <h1><a href="rhome" style="text-decoration: none; color: inherit;">CareerStream</a></h1>
                 </div>
                 <div class="user-info">
                     <span><%= recruiterLayout.getName() %></span>
