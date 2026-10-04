@@ -23,12 +23,12 @@
 
   <p style="margin-top: 32px;">
     <a id="live-btn" class="btn" href="#" target="_blank">Connecting to Live Server...</a>
-    <a class="btn btn-outline" href="https://neerajsait.github.io/RecruiterService/" target="_blank">View Source on GitHub</a>
+    <a class="btn btn-outline" href="https://github.com/neerajsait/RecruiterService" target="_blank">View Source on GitHub</a>
   </p>
 
   <script>
     // Fetches the latest Cloudflare tunnel URL from your GitHub Gist
-    fetch("https://gist.githubusercontent.com/YOUR_USERNAME/YOUR_GIST_ID/raw/tunnel-url.json?t=" + Date.now())
+    fetch("https://raw.githubusercontent.com/neerajsait/RecruiterService/master/docs/tunnel-url.json?t=" + Date.now())
       .then(res => res.json())
       .then(data => {
         const btn = document.getElementById("live-btn");
