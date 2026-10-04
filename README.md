@@ -13,6 +13,12 @@ The Recruiter Service is deployed on **Oracle Cloud Infrastructure (OCI)** and i
 Welcome to the official repository of the **Campus Recruitment Portal – Recruiter Model**.  
 This project provides an intuitive interface and robust backend for recruiters to manage job postings, view applications, schedule interviews, track dynamic tasks, and analyze recruitment data. It is part of a full-fledged placement management system designed to streamline campus hiring.
 
+### 🎓 Academic Group Project Context
+This Recruiter Service was developed as a core module of a larger academic group project. You can find the complete, full-fledged project repository here:  
+🔗 **[JFSDSDPProject Repository](https://github.com/neerajsait/JFSDSDPProject)**
+
+As part of this group effort, I independently containerized this specific module with Docker and successfully deployed it to a live Oracle Cloud Infrastructure (OCI) instance.
+
 ## ✨ Features Added / Fixed
 - **Dashboard Overview**: Get live stats on open jobs, candidate applications, and interviews scheduled.
 - **Dynamic Task Management**: Allows recruiters to add and mark personal recruitment tasks as completed.
