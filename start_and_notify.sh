@@ -46,3 +46,11 @@ if [ -n "$RESEND_API_KEY" ] && [ -n "$TO_EMAIL" ]; then
             }'
     echo -e "\nEmail notification sent!"
 fi
+
+# 5. Write the new Cloudflare URL to the JSON file
+echo "{\"url\": \"$URL\"}" > docs/tunnel-url.json
+
+# 6. Push the updated JSON to GitHub
+git add docs/tunnel-url.json
+git commit -m "chore: update live tunnel URL"
+git push origin master
