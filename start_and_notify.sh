@@ -3,7 +3,7 @@
 
 # 1. Start the Docker Compose stack in the background
 echo "Starting application and Cloudflare Tunnel..."
-docker-compose up -d
+sudo docker-compose up -d
 
 # 2. Wait for Cloudflare to generate the URL
 echo "Waiting for Cloudflare to generate the URL (this takes a few seconds)..."
@@ -11,10 +11,10 @@ sleep 10
 
 # 3. Extract the URL from the tunnel logs
 # This grabs the last trycloudflare.com URL printed in the logs
-URL=$(docker-compose logs tunnel | grep -o 'https://[a-zA-Z0-9-]*\.trycloudflare\.com' | tail -1)
+URL=$(sudo docker-compose logs tunnel | grep -o 'https://[a-zA-Z0-9-]*\.trycloudflare\.com' | tail -1)
 
 if [ -z "$URL" ]; then
-    echo "Could not find the URL yet. You can check manually by running: docker-compose logs tunnel"
+    echo "Could not find the URL yet. You can check manually by running: sudo docker-compose logs tunnel"
     exit 1
 fi
 
