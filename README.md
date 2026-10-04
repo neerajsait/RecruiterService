@@ -2,14 +2,14 @@
 
 > **RecruiterService** — the recruiter module of the Campus Recruitment Portal (CareerStream), maintained as a standalone, deployed service.
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Open%20Portal-22c55e?style=for-the-badge&logo=cloudflare&logoColor=white)](https://trees-diego-elections-aquarium.trycloudflare.com/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Open%20Portal-22c55e?style=for-the-badge&logo=cloudflare&logoColor=white)](https://neerajsait.github.io/RecruiterService/)
 [![Main Project](https://img.shields.io/badge/Main%20Repo-JFSDSDPProject-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/neerajsait/JFSDSDPProject)
 
 ## 🚀 Live Deployment
 
 The Recruiter Service is deployed on **Oracle Cloud Infrastructure (OCI)** and is accessible here:
 
-🔗 **[Open the deployed Recruiter Portal](https://trees-diego-elections-aquarium.trycloudflare.com/)**
+🔗 **[Open the deployed Recruiter Portal](https://neerajsait.github.io/RecruiterService/)**
 
 > The public URL is exposed through a Cloudflare Tunnel connected to the application running on Oracle Cloud.
 
