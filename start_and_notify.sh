@@ -48,9 +48,22 @@ if [ -n "$RESEND_API_KEY" ] && [ -n "$TO_EMAIL" ]; then
 fi
 
 # 5. Write the new Cloudflare URL to the JSON file
+mkdir -p docs
 echo "{\"url\": \"$URL\"}" > docs/tunnel-url.json
 
 # 6. Push the updated JSON to GitHub
+git config user.name "neerajsait"
+git config user.email "tneerajvenkatasai@gmail.com"
+
+# Pull latest remote changes to avoid rejected pushes
+git pull --rebase origin master
+
 git add docs/tunnel-url.json
-git commit -m "chore: update live tunnel URL"
-git push origin master
+# Only commit if there is an actual URL difference
+if ! git diff --cached --quiet; then
+    git commit -m "chore: update live tunnel URL [skip ci]"
+    git push origin master
+    echo "Pushed updated URL to GitHub Pages!"
+else
+    echo "URL has not changed, skipping git push."
+fi
