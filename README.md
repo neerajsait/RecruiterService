@@ -37,7 +37,7 @@ I have the rights to update and maintain this repository on my own. Because of t
 - **Dashboard Overview**: Get live stats on open jobs, candidate applications, and interviews scheduled.
 - **Dynamic Task Management**: Allows recruiters to add and mark personal recruitment tasks as completed.
 - **Job Posting Management**: Post new openings, edit requirements, and manage maximum allowed applications.
-- **Security & Compliance**: Implemented robust CSRF protection and strict Content Security Policies (CSP) with dynamic nonces.
+- **Authentication & Security**: Managed via Stateful HTTP Sessions with custom Interceptors, supplemented by robust CSRF protection and strict Content Security Policies (CSP) with dynamic nonces.
 - **Secure Password Recovery**: Implemented a "Forgot Password" system with secure, 6-digit OTPs sent directly to the recruiter's email.
 - **Automated Testing**: Comprehensive unit and integration test suite (13+ tests) using JUnit 5, Mockito, and MockMvc to ensure backend stability.
 - **Application Monitoring**: Integrated Spring Boot Actuator to expose `/actuator/health` and `/actuator/metrics` for production-grade telemetry.
@@ -77,7 +77,7 @@ This project is built with:
 - 🌐 **Frontend**: JSP / Custom CSS (Dashboard styling)
 - 🗄️ **Backend**: Spring Boot, Spring MVC, Spring Data JPA
 - 🛢️ **Database**: MySQL
-- 🔒 **Security**: Spring Security Crypto, Anti-CSRF Tokens, Content Security Policies (CSP)
+- 🔒 **Security**: Stateful HTTP Sessions, Custom Session Interceptors, Anti-CSRF Tokens, Content Security Policies (CSP)
 - 🧪 **Testing & CI**: JUnit 5, Mockito, MockMvc, GitHub Actions
 - ☁️ **Deployment**: Docker, Oracle Cloud Infrastructure (OCI), Cloudflare Tunnel
 
